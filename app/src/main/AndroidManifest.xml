@@ -24,6 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StatusSaver"
         tools:targetApi="31">
+<!--        splash screen-->
         <activity
             android:name=".SplashScreen"
             android:exported="true"
@@ -38,6 +39,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+<!--        Main activity-->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -46,6 +48,18 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.statussaver.provider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/path_for_provider"
+                tools:replace="android:resource" />
+        </provider>
     </application>
 
 </manifest>
