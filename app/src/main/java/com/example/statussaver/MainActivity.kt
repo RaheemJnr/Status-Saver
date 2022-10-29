@@ -1,17 +1,10 @@
 package com.example.statussaver
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
-import android.database.Cursor
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.storage.StorageManager
-import android.provider.DocumentsContract
-import android.provider.OpenableColumns
-import android.text.TextUtils.replace
-import android.util.Log
+import android.os.Handler
+import android.view.View
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
@@ -24,16 +17,17 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.documentfile.provider.DocumentFile
+import com.example.statussaver.model.Status
 import com.example.statussaver.ui.theme.StatusSaverTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.w3c.dom.Document
+import com.example.statussaver.utilz.Common
+import java.io.File
+import java.util.*
 
 class MainActivity : ComponentActivity() {
 
+    private val imagesList: ArrayList<Status> = arrayListOf()
+    private val handler = Handler()
+    //
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,37 +46,65 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun getStatus() {
+        if (Common.STATUS_DIRECTORY.exists()) {
+            execute(Common.STATUS_DIRECTORY)
+        } else if (Common.STATUS_DIRECTORY_NEW.exists()) {
+            execute(Common.STATUS_DIRECTORY_NEW)
+        } else {
+//            messageTextView.setVisibility(View.VISIBLE)
+//            messageTextView.setText(R.string.cant_find_whatsapp_dir)
+//            Toast.makeText(
+//                getActivity(),
+//                getString(R.string.cant_find_whatsapp_dir),
+//                Toast.LENGTH_SHORT
+//            ).show()
+//            swipeRefreshLayout.setRefreshing(false)
+        }
+    }
 
-/*
-override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-super.onActivityResult(requestCode, resultCode, data)
-if (requestCode == 1234 && resultCode == Activity.RESULT_OK) {
-val directoryUri = data?.data ?: return
+    private fun execute(wAFolder: File) {
+        Thread {
+            val statusFiles: Array<File>? = wAFolder.listFiles()
+            imagesList.clear()
+            if (statusFiles != null && statusFiles.isNotEmpty()) {
+                Arrays.sort(statusFiles)
+                for (file in statusFiles) {
+                    val status = Status(file, file.name, file.absolutePath)
+                    if (!status.isVideo && status.title.endsWith(".jpg")) {
+                        imagesList.add(status)
+                    }
+                }
+                handler.post(Runnable {
+                    if (imagesList.size <= 0) {
+//                        messageTextView.setVisibility(View.VISIBLE)
+//                        messageTextView.setText(R.string.no_files_found)
+                    } else {
+//                        messageTextView.setVisibility(View.GONE)
+//                        messageTextView.setText("")
+                    }
+//                    imageAdapter = ImageAdapter(imagesList, container)
+//                    recyclerView.setAdapter(imageAdapter)
+//                    imageAdapter.notifyDataSetChanged()
+//                    progressBar.setVisibility(View.GONE)
+                })
+            } else {
+                handler.post {
+//                    progressBar.setVisibility(View.GONE)
+//                    messageTextView.setVisibility(View.VISIBLE)
+//                    messageTextView.setText(R.string.no_files_found)
+//                    Toast.makeText(
+//                        getActivity(),
+//                        getString(R.string.no_files_found),
+//                        Toast.LENGTH_SHORT
+//                    )
+//                        .show()
+                }
+            }
+         //   swipeRefreshLayout.setRefreshing(false)
+        }.start()
+    }
 
-contentResolver.takePersistableUriPermission(
-directoryUri,
-Intent.FLAG_GRANT_READ_URI_PERMISSION
-)
-
-val documentsTree = DocumentFile.fromTreeUri(application, directoryUri) ?: return
-val childDocuments = documentsTree.listFiles().toCachingList()
-treedata = childDocuments.toString()
-Log.d("whatsapp", treedata)
-
-//                // It's much nicer when the documents are sorted by something, so we'll sort the documents
-//                // we got by name. Unfortunate there may be quite a few documents, and sorting can take
-//                // some time, so we'll take advantage of coroutines to take this work off the main thread.
-//                CoroutineScope().launch {
-//                    val sortedDocuments = withContext(Dispatchers.IO) {
-//                        childDocuments.toMutableList().apply {
-//                            sortBy { it.name }
-//                        }
-//                    }
-//                    _documents.postValue(sortedDocuments)
-//                }
-}
-}
-*/
 }
 
 
