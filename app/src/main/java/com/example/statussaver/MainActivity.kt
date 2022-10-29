@@ -27,6 +27,7 @@ class MainActivity : ComponentActivity() {
 
     private val imagesList: ArrayList<Status> = arrayListOf()
     private val handler = Handler()
+
     //
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,8 +39,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("hi") {
 
+                    Greeting("${imagesList.size}") {
+                        getStatus()
                     }
                 }
             }
@@ -51,15 +53,6 @@ class MainActivity : ComponentActivity() {
             execute(Common.STATUS_DIRECTORY)
         } else if (Common.STATUS_DIRECTORY_NEW.exists()) {
             execute(Common.STATUS_DIRECTORY_NEW)
-        } else {
-//            messageTextView.setVisibility(View.VISIBLE)
-//            messageTextView.setText(R.string.cant_find_whatsapp_dir)
-//            Toast.makeText(
-//                getActivity(),
-//                getString(R.string.cant_find_whatsapp_dir),
-//                Toast.LENGTH_SHORT
-//            ).show()
-//            swipeRefreshLayout.setRefreshing(false)
         }
     }
 
@@ -88,20 +81,21 @@ class MainActivity : ComponentActivity() {
 //                    imageAdapter.notifyDataSetChanged()
 //                    progressBar.setVisibility(View.GONE)
                 })
-            } else {
-                handler.post {
-//                    progressBar.setVisibility(View.GONE)
-//                    messageTextView.setVisibility(View.VISIBLE)
-//                    messageTextView.setText(R.string.no_files_found)
-//                    Toast.makeText(
-//                        getActivity(),
-//                        getString(R.string.no_files_found),
-//                        Toast.LENGTH_SHORT
-//                    )
-//                        .show()
-                }
             }
-         //   swipeRefreshLayout.setRefreshing(false)
+//            else {
+////                handler.post {
+//////                    progressBar.setVisibility(View.GONE)
+//////                    messageTextView.setVisibility(View.VISIBLE)
+//////                    messageTextView.setText(R.string.no_files_found)
+//////                    Toast.makeText(
+//////                        getActivity(),
+//////                        getString(R.string.no_files_found),
+//////                        Toast.LENGTH_SHORT
+//////                    )
+//////                        .show()
+////                }
+//            }
+            //   swipeRefreshLayout.setRefreshing(false)
         }.start()
     }
 

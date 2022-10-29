@@ -33,7 +33,6 @@ val PERMISSIONS = arrayOf(
 )
 private const val MANAGE_EXTERNAL_STORAGE_PERMISSION = "android:manage_external_storage"
 
-@OptIn(ExperimentalPermissionsApi::class)
 class SplashScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
