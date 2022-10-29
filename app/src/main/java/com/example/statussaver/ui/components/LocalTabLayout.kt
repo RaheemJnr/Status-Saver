@@ -42,8 +42,6 @@ fun LocalTabLayout(
     imageStatus: State<List<Status>?>,
     videoStatus: State<List<Status>?>
 ) {
-
-
     val tabsTitles =
         remember { listOf(TabItems("Images"), TabItems("Videos")) }
 
@@ -54,7 +52,6 @@ fun LocalTabLayout(
     ) { page ->
         when (page) {
             0 -> {
-                //whatsapp business
                 Box(modifier = Modifier) {
                     SwipeRefresh(
                         state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
@@ -78,20 +75,18 @@ fun LocalTabLayout(
                                     )
                                 }
                             }
-
                         }
                     }
 
                 }
             }
-
             1 -> {
                 SwipeRefresh(
                     state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
                     onRefresh = {
                         mainViewModel.refresh()
-                        mainViewModel.getWABusinessStatus()
-                        mainViewModel.getWhatsappStatus()
+                        mainViewModel.getWhatsappStatusVideo()
+                        mainViewModel.getWABusinessStatusVideo()
                     },
                 ) {
                     LazyColumn {

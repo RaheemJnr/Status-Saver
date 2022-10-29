@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.statussaver.ui.components.LocalTabLayout
@@ -26,7 +25,6 @@ fun Whatsapp(
     val isRefreshing = mainViewModel.isRefreshing
     mainViewModel.getWhatsappStatus()
     mainViewModel.getWhatsappStatusVideo()
-    val context = LocalContext.current
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
     //root composable

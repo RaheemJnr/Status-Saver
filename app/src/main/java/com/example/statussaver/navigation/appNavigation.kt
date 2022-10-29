@@ -29,9 +29,7 @@ fun MainScreenNavigation(
     NavHost(navController, startDestination = MainScreen.WABusiness.route) {
         //local
         composable(MainScreen.WABusiness.route) {
-            WABusiness(
-                mainViewModel
-            )
+            WABusiness(mainViewModel)
         }
         //online
         composable(MainScreen.Whatsapp.route) {

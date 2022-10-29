@@ -97,6 +97,7 @@ class MainViewModel() : ViewModel() {
                     val status = Status(file, file.name, file.absolutePath)
                     if (!status.isVideo && status.title.endsWith(".jpg")) {
                         _waBusinessImageStatus.postValue(listOf(status))
+                        Log.d("statusss","$status")
                     }
                 }
             }
@@ -112,6 +113,7 @@ class MainViewModel() : ViewModel() {
                     val status = Status(file, file.name, file.absolutePath)
                     if (status.isVideo) {
                         _waBusinessVideoStatus.postValue(listOf(status))
+                        Log.d("statusss","$status")
                     }
                 }
             }
