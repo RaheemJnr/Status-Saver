@@ -55,73 +55,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-
                     Greeting(items) {
-                        getStatus()
                     }
                 }
             }
         }
     }
 
-    private fun getStatus() {
-        if (Common.STATUS_DIRECTORY.exists()) {
-            Log.d("WhatsApp", "Folder exist")
-            execute(Common.STATUS_DIRECTORY)
-        } else if (Common.STATUS_DIRECTORY_NEW.exists()) {
-            Log.d("WhatsApp", "new Folder exist")
-            execute(Common.STATUS_DIRECTORY_NEW)
-        }
-    }
-
-    private fun execute(wAFolder: File) {
-        Thread {
-            val statusFiles: Array<File>? = wAFolder.listFiles()
-            imagesList.clear()
-            if (statusFiles != null && statusFiles.isNotEmpty()) {
-                Arrays.sort(statusFiles)
-                for (file in statusFiles) {
-                    val status = Status(file, file.name, file.absolutePath)
-                    if (!status.isVideo && status.title.endsWith(".jpg")) {
-                        imagesList.add(status)
-                        items = imagesList.toString()
-                        Log.d("WhatsApp", "$items")
-                    }
-                }
-/*
-handler.post {
-if (imagesList.size <= 0) {
-//                        messageTextView.setVisibility(View.VISIBLE)
-//                        messageTextView.setText(R.string.no_files_found)
-} else {
-//                        messageTextView.setVisibility(View.GONE)
-//                        messageTextView.setText("")
-}
-//                    imageAdapter = ImageAdapter(imagesList, container)
-//                    recyclerView.setAdapter(imageAdapter)
-//                    imageAdapter.notifyDataSetChanged()
-//                    progressBar.setVisibility(View.GONE)
-}
-*/
-            }
-/*
-else {
-//                handler.post {
-////                    progressBar.setVisibility(View.GONE)
-////                    messageTextView.setVisibility(View.VISIBLE)
-////                    messageTextView.setText(R.string.no_files_found)
-////                    Toast.makeText(
-////                        getActivity(),
-////                        getString(R.string.no_files_found),
-////                        Toast.LENGTH_SHORT
-////                    )
-////                        .show()
-//                }
-}
-swipeRefreshLayout.setRefreshing(false)
-*/
-        }.start()
-    }
 
 
     @Deprecated("Deprecated in Java")
