@@ -64,7 +64,6 @@ fun LocalTabLayout(
             )
         }
     }
-
     HorizontalPager(
         count = tabsTitles.size,
         state = pagerState,

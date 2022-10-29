@@ -28,7 +28,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 @Composable
 fun BottomNav(navController: NavController) {
 
-    val dimension by remember { mutableStateOf(arrayListOf(35, 35, 35)) }
+    val dimension by remember { mutableStateOf(arrayListOf(34, 34, 34)) }
     HomeBottomItem(dimension, navController)
 }
 
