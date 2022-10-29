@@ -22,25 +22,29 @@ object Common {
     )
     var APP_DIR: String? = null
     fun copyFile(status: Status, context: Context, container: RelativeLayout) {
-        val file = File(APP_DIR)
-        if (!file.exists()) {
-            if (!file.mkdirs()) {
-                Snackbar.make(container, "Something went wrong", Snackbar.LENGTH_SHORT).show()
+        val file = APP_DIR?.let { File(it) }
+        if (file != null) {
+            if (!file.exists()) {
+                if (!file.mkdirs()) {
+                    Snackbar.make(container, "Something went wrong", Snackbar.LENGTH_SHORT).show()
+                }
             }
         }
         val fileName: String
         val sdf = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
         val currentDateTime = sdf.format(Date())
-        if (status.isVideo) {
-            fileName = "VID_$currentDateTime.mp4"
+        fileName = if (status.isVideo) {
+            "VID_$currentDateTime.mp4"
         } else {
-            fileName = "IMG_$currentDateTime.jpg"
+            "IMG_$currentDateTime.jpg"
         }
         val destFile = File(file.toString() + File.separator + fileName)
         try {
             org.apache.commons.io.FileUtils.copyFile(status.file, destFile)
             destFile.setLastModified(System.currentTimeMillis())
-            SingleMediaScanner(context, file)
+            if (file != null) {
+                SingleMediaScanner(context, file)
+            }
         } catch (e: IOException) {
             e.printStackTrace()
             Log.e("satusSaver", e.toString())

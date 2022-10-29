@@ -33,7 +33,6 @@ import kotlinx.coroutines.withContext
 import org.w3c.dom.Document
 
 class MainActivity : ComponentActivity() {
-    var treedata = ""
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,8 +44,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting(treedata) {
-                        openDirectory()
+                    Greeting("hi") {
 
                     }
                 }
@@ -55,26 +53,21 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    private fun openDirectory() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-        startActivityForResult(intent, 1234)
-    }
+/*
+override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+super.onActivityResult(requestCode, resultCode, data)
+if (requestCode == 1234 && resultCode == Activity.RESULT_OK) {
+val directoryUri = data?.data ?: return
 
+contentResolver.takePersistableUriPermission(
+directoryUri,
+Intent.FLAG_GRANT_READ_URI_PERMISSION
+)
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1234 && resultCode == Activity.RESULT_OK) {
-            val directoryUri = data?.data ?: return
-
-            contentResolver.takePersistableUriPermission(
-                directoryUri,
-                Intent.FLAG_GRANT_READ_URI_PERMISSION
-            )
-
-            val documentsTree = DocumentFile.fromTreeUri(application, directoryUri) ?: return
-            val childDocuments = documentsTree.listFiles().toCachingList()
-            treedata = childDocuments.toString()
-            Log.d("whatsapp", treedata)
+val documentsTree = DocumentFile.fromTreeUri(application, directoryUri) ?: return
+val childDocuments = documentsTree.listFiles().toCachingList()
+treedata = childDocuments.toString()
+Log.d("whatsapp", treedata)
 
 //                // It's much nicer when the documents are sorted by something, so we'll sort the documents
 //                // we got by name. Unfortunate there may be quite a few documents, and sorting can take
@@ -87,8 +80,9 @@ class MainActivity : ComponentActivity() {
 //                    }
 //                    _documents.postValue(sortedDocuments)
 //                }
-        }
-    }
+}
+}
+*/
 }
 
 

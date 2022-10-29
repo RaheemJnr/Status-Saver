@@ -39,12 +39,12 @@ class SplashScreen : ComponentActivity() {
         super.onCreate(savedInstanceState)
         makeFullScreen()
         setContent {
-            val multiplePermissionsState = rememberMultiplePermissionsState(
-                listOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
-            )
+//            val multiplePermissionsState = rememberMultiplePermissionsState(
+//                listOf(
+//                    Manifest.permission.READ_EXTERNAL_STORAGE,
+//                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                )
+//            )
 
             StatusSaverTheme {
                 // A surface container using the 'background' color from the theme
