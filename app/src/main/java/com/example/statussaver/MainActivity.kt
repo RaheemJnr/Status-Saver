@@ -28,8 +28,6 @@ import java.io.File
 import java.util.*
 
 
-
-
 //
 class MainActivity : ComponentActivity() {
 
