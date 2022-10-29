@@ -9,6 +9,7 @@ import com.example.statussaver.model.Status
 import com.example.statussaver.utilz.Constants.BUSINESS_STATUS_DIRECTORY
 import com.example.statussaver.utilz.Constants.BUSINESS_STATUS_DIRECTORY_NEW
 import com.example.statussaver.utilz.Constants.WHATSAPP_STATUS_DIRECTORY
+import com.example.statussaver.utilz.Constants.WHATSAPP_STATUS_DIRECTORY_NEW
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
@@ -16,31 +17,59 @@ import java.util.*
 
 class MainViewModel() : ViewModel() {
 
-    private val _status = MutableLiveData<List<Status>>()
-    val status: LiveData<List<Status>> get() = _status
+    private val _waBusinessImageStatus = MutableLiveData<List<Status>>()
+    val waBusinessImageStatus: LiveData<List<Status>> get() = _waBusinessImageStatus
+
+    private val _waBusinessVideoStatus = MutableLiveData<List<Status>>()
+    val waBusinessVideoStatus: LiveData<List<Status>> get() = _waBusinessVideoStatus
+
+    //
+    private val _whatsappImageStatus = MutableLiveData<List<Status>>()
+    val whatsappImageStatus: LiveData<List<Status>> get() = _whatsappImageStatus
+
+    private val _whatsappVideoStatus = MutableLiveData<List<Status>>()
+    val whatsappVideoStatus: LiveData<List<Status>> get() = _whatsappVideoStatus
 
 
     fun getWABusinessStatus() {
         if (BUSINESS_STATUS_DIRECTORY.exists()) {
             Log.d("WhatsApp", "Folder exist")
-            execute(BUSINESS_STATUS_DIRECTORY)
+            executeForImage(BUSINESS_STATUS_DIRECTORY)
         } else if (BUSINESS_STATUS_DIRECTORY_NEW.exists()) {
             Log.d("WhatsApp", "new Folder exist")
-            execute(BUSINESS_STATUS_DIRECTORY_NEW)
+            executeForImage(BUSINESS_STATUS_DIRECTORY_NEW)
         }
     }
 
     fun getWhatsappStatus() {
         if (WHATSAPP_STATUS_DIRECTORY.exists()) {
             Log.d("WhatsApp", "Folder exist")
-            execute(WHATSAPP_STATUS_DIRECTORY)
+            executeForImage(WHATSAPP_STATUS_DIRECTORY)
         } else if (WHATSAPP_STATUS_DIRECTORY.exists()) {
             Log.d("WhatsApp", "new Folder exist")
-            execute(WHATSAPP_STATUS_DIRECTORY)
+            executeForImage(WHATSAPP_STATUS_DIRECTORY)
         }
     }
 
-    private fun execute(wAFolder: File) {
+
+    fun getWABusinessStatusVideo() {
+        if (BUSINESS_STATUS_DIRECTORY.exists()) {
+            executeForVideo(BUSINESS_STATUS_DIRECTORY)
+        } else if (BUSINESS_STATUS_DIRECTORY_NEW.exists()) {
+            executeForVideo(BUSINESS_STATUS_DIRECTORY_NEW)
+        }
+    }
+
+    fun getWhatsappStatusVideo() {
+        if (WHATSAPP_STATUS_DIRECTORY.exists()) {
+            executeForVideo(WHATSAPP_STATUS_DIRECTORY)
+        } else if (WHATSAPP_STATUS_DIRECTORY_NEW.exists()) {
+            executeForVideo(WHATSAPP_STATUS_DIRECTORY_NEW)
+        }
+    }
+
+
+    private fun executeForImage(wAFolder: File) {
         viewModelScope.launch {
             val statusFiles: Array<File>? = wAFolder.listFiles()
             if (statusFiles != null && statusFiles.isNotEmpty()) {
@@ -48,12 +77,26 @@ class MainViewModel() : ViewModel() {
                 for (file in statusFiles) {
                     val status = Status(file, file.name, file.absolutePath)
                     if (!status.isVideo && status.title.endsWith(".jpg")) {
-                        _status.postValue(listOf(status))
+                        _waBusinessImageStatus.postValue(listOf(status))
                     }
                 }
             }
         }
     }
 
+    private fun executeForVideo(waFolder: File) {
+        viewModelScope.launch {
+            val statusFiles = waFolder.listFiles()
+            if (statusFiles != null && statusFiles.isNotEmpty()) {
+                Arrays.sort(statusFiles)
+                for (file in statusFiles) {
+                    val status = Status(file, file.name, file.absolutePath)
+                    if (status.isVideo) {
+                        _waBusinessVideoStatus.postValue(listOf(status))
+                    }
+                }
+            }
+        }
+    }
 
 }

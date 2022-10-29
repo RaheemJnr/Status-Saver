@@ -21,7 +21,10 @@ fun Whatsapp(
     mainViewModel: MainViewModel
 ) {
     //context
-    val status = mainViewModel.status.observeAsState()
+    val imageStatus = mainViewModel.whatsappImageStatus.observeAsState()
+    val videoStatus = mainViewModel.whatsappVideoStatus.observeAsState()
+    mainViewModel.getWhatsappStatus()
+    mainViewModel.getWhatsappStatusVideo()
     val context = LocalContext.current
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
@@ -30,7 +33,7 @@ fun Whatsapp(
         Modifier.fillMaxSize()
     ) {
         Scaffold(
-            topBar = {  }
+            topBar = { }
         ) { contentPadding ->
             Column(
                 modifier = Modifier.padding(contentPadding)
@@ -41,7 +44,8 @@ fun Whatsapp(
                 LocalTabLayout(
                     pagerState = pagerState,
                     scope = scope,
-                    audios = status,
+                    imageStatus = imageStatus,
+                    videoStatus = videoStatus
                 )
 
 

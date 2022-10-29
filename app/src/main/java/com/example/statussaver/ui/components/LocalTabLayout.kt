@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
@@ -18,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.statussaver.model.Status
+import com.example.statussaver.utilz.TabItems
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
@@ -30,11 +32,72 @@ import kotlinx.coroutines.launch
 fun LocalTabLayout(
     pagerState: PagerState,
     scope: CoroutineScope,
-    audios: State<List<Status>?>,
+    imageStatus: State<List<Status>?>,
+    videoStatus: State<List<Status>?>
 ) {
     val tabsTitles =
         remember { listOf(TabItems("Images"), TabItems("Videos")) }
 
+    TabRowComposable(pagerState, tabsTitles, scope)
+    HorizontalPager(
+        count = tabsTitles.size,
+        state = pagerState,
+    ) { page ->
+        when (page) {
+            0 -> {
+                //whatsapp business
+                Box(modifier = Modifier) {
+                    LazyColumn {
+                        imageStatus.value?.let { list ->
+                            items(
+                                items = list,
+                                key = {
+                                    it.title
+                                }
+                            ) { item: Status ->
+                                Text(
+                                    text = "$item",
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            ///
+            1 -> {
+                LazyColumn {
+                    videoStatus.value?.let { list ->
+                        items(
+                            items = list,
+                            key = {
+                                it.title
+                            }
+                        ) { item: Status ->
+                            Text(
+                                text = "$item",
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+    }
+}
+
+@Composable
+@OptIn(ExperimentalPagerApi::class)
+private fun TabRowComposable(
+    pagerState: PagerState,
+    tabsTitles: List<TabItems>,
+    scope: CoroutineScope
+) {
     TabRow(
         selectedTabIndex = pagerState.currentPage,
         indicator = { tabPositions ->
@@ -64,71 +127,4 @@ fun LocalTabLayout(
             )
         }
     }
-    HorizontalPager(
-        count = tabsTitles.size,
-        state = pagerState,
-    ) { page ->
-        when (page) {
-            0 -> {
-                //whatsapp business
-                Box(modifier = Modifier) {
-                    Text(
-                        text = "page $page",
-                        modifier = Modifier.fillMaxSize()
-                    )
-                    LazyColumn {
-
-                        audios.value?.let {
-//                            items(
-//                                items = list,
-//                                key = {
-//                                    it.id
-//                                }
-//                            ) { item: Songs ->
-//                                SongListItem(
-//                                    songTitle = item.title,
-//                                    songArtist = item.artist,
-//                                    songAlbum = item.album,
-//                                    context = context
-//                                ) {
-//                                    mainViewModel.playMediaId(item.id)
-//                                    // mainViewModel.isCollapsed.value = false
-//                                }
-//                            }
-                        }
-
-                    }
-                }
-            }
-            1 -> {
-                //whatsapp
-                Text(
-                    text = "page $page",
-                    modifier = Modifier.fillMaxSize()
-                )
-                LazyColumn {
-//                    audios.value?.let { itemm ->
-//                        items(
-//                            items = itemm,
-//                            key = {
-//                                it.id
-//                            }
-//                        ) { item: Songs ->
-//                            AlbumsItem(
-//                                context = context,
-//                                albumTitle = item.album,
-//                                albumArtist = item.artist
-//                            ) {
-//
-//                            }
-//                        }
-//                    }
-                }
-            }
-        }
-    }
 }
-
-data class TabItems(
-    val value: String,
-)

@@ -35,3 +35,7 @@ object Constants {
     )
 }
 
+
+data class TabItems(
+    val value: String,
+)

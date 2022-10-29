@@ -21,16 +21,20 @@ fun WABusiness(
     mainViewModel: MainViewModel
 ) {
     //context
-    val status = mainViewModel.status.observeAsState()
+    val imageStatus = mainViewModel.waBusinessImageStatus.observeAsState()
+    val videoStatus = mainViewModel.waBusinessVideoStatus.observeAsState()
+    mainViewModel.getWABusinessStatus()
+    mainViewModel.getWABusinessStatusVideo()
+    //
     val context = LocalContext.current
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
-    //root composable
+    //
     Column(
         Modifier.fillMaxSize()
     ) {
         Scaffold(
-            topBar = {  }
+            topBar = { }
         ) { contentPadding ->
             Column(
                 modifier = Modifier.padding(contentPadding)
@@ -41,7 +45,8 @@ fun WABusiness(
                 LocalTabLayout(
                     pagerState = pagerState,
                     scope = scope,
-                    audios = status,
+                    imageStatus = imageStatus,
+                    videoStatus = videoStatus
                 )
 
 
