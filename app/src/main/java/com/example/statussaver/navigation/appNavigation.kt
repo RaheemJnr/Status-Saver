@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.statussaver.ui.screen.whatsapp_business.LocalMusicScreen
+import com.example.statussaver.viewmodel.MainViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -21,12 +22,14 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun MainScreenNavigation(
     navController: NavHostController,
 ) {
-   // val mainViewModel = hiltViewModel<MainViewModel>()
-  //  val songListViewModel = hiltViewModel<SongListScreenViewModel>()
+    // val mainViewModel = hiltViewModel<MainViewModel>()
+    //  val songListViewModel = hiltViewModel<SongListScreenViewModel>()
+    val mainViewModel = MainViewModel()
     NavHost(navController, startDestination = MainScreen.Local.route!!) {
         //local
         composable(MainScreen.Local.route) {
             LocalMusicScreen(
+                mainViewModel
             )
         }
 //        //online
