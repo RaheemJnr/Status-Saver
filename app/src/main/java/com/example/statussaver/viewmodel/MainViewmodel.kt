@@ -6,7 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.statussaver.model.Status
-import com.example.statussaver.utilz.Common
+import com.example.statussaver.utilz.Constants.BUSINESS_STATUS_DIRECTORY
+import com.example.statussaver.utilz.Constants.BUSINESS_STATUS_DIRECTORY_NEW
+import com.example.statussaver.utilz.Constants.WHATSAPP_STATUS_DIRECTORY
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
@@ -17,13 +19,24 @@ class MainViewModel() : ViewModel() {
     private val _status = MutableLiveData<List<Status>>()
     val status: LiveData<List<Status>> get() = _status
 
-    private fun getStatus() {
-        if (Common.STATUS_DIRECTORY.exists()) {
+
+    fun getWABusinessStatus() {
+        if (BUSINESS_STATUS_DIRECTORY.exists()) {
             Log.d("WhatsApp", "Folder exist")
-            execute(Common.STATUS_DIRECTORY)
-        } else if (Common.STATUS_DIRECTORY_NEW.exists()) {
+            execute(BUSINESS_STATUS_DIRECTORY)
+        } else if (BUSINESS_STATUS_DIRECTORY_NEW.exists()) {
             Log.d("WhatsApp", "new Folder exist")
-            execute(Common.STATUS_DIRECTORY_NEW)
+            execute(BUSINESS_STATUS_DIRECTORY_NEW)
+        }
+    }
+
+    fun getWhatsappStatus() {
+        if (WHATSAPP_STATUS_DIRECTORY.exists()) {
+            Log.d("WhatsApp", "Folder exist")
+            execute(WHATSAPP_STATUS_DIRECTORY)
+        } else if (WHATSAPP_STATUS_DIRECTORY.exists()) {
+            Log.d("WhatsApp", "new Folder exist")
+            execute(WHATSAPP_STATUS_DIRECTORY)
         }
     }
 
