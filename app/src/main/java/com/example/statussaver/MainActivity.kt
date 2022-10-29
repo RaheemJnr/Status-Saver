@@ -16,9 +16,12 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.statussaver.model.Status
+import com.example.statussaver.ui.components.MainScreen
 import com.example.statussaver.ui.theme.StatusSaverTheme
 import com.example.statussaver.utilz.Common
+import com.example.statussaver.viewmodel.MainViewModel
 import java.io.File
 import java.util.*
 
@@ -44,11 +47,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             StatusSaverTheme {
+
+                val mainViewModel: MainViewModel = viewModel()
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    MainScreen(mainViewModel = mainViewModel)
                 }
             }
         }

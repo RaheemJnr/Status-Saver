@@ -1,6 +1,5 @@
 package com.example.statussaver.ui.components
 
-import android.content.Context
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -32,10 +31,9 @@ fun LocalTabLayout(
     pagerState: PagerState,
     scope: CoroutineScope,
     audios: State<List<Status>?>,
-    context: Context,
 ) {
     val tabsTitles =
-        remember { listOf(TabItems("GbWhatsApp"), TabItems("WhatsApp"), TabItems("Saved Files")) }
+        remember { listOf(TabItems("Images"), TabItems("Videos")) }
 
     TabRow(
         selectedTabIndex = pagerState.currentPage,
@@ -74,10 +72,14 @@ fun LocalTabLayout(
         when (page) {
             0 -> {
                 //whatsapp business
-                Box(modifier = Modifier)
-                {
+                Box(modifier = Modifier) {
+                    Text(
+                        text = "page $page",
+                        modifier = Modifier.fillMaxSize()
+                    )
                     LazyColumn {
-                        audios.value?.let { list ->
+
+                        audios.value?.let {
 //                            items(
 //                                items = list,
 //                                key = {
@@ -101,6 +103,10 @@ fun LocalTabLayout(
             }
             1 -> {
                 //whatsapp
+                Text(
+                    text = "page $page",
+                    modifier = Modifier.fillMaxSize()
+                )
                 LazyColumn {
 //                    audios.value?.let { itemm ->
 //                        items(
@@ -119,13 +125,6 @@ fun LocalTabLayout(
 //                        }
 //                    }
                 }
-            }
-            2 -> {
-                //saved files
-                Text(
-                    text = "page $page",
-                    modifier = Modifier.fillMaxSize()
-                )
             }
         }
     }

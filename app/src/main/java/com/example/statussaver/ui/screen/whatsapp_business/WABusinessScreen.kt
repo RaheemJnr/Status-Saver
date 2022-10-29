@@ -17,7 +17,7 @@ import com.google.accompanist.pager.rememberPagerState
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun LocalMusicScreen(
+fun WABusiness(
     mainViewModel: MainViewModel
 ) {
     //context
@@ -42,7 +42,6 @@ fun LocalMusicScreen(
                     pagerState = pagerState,
                     scope = scope,
                     audios = status,
-                    context = context,
                 )
 
 

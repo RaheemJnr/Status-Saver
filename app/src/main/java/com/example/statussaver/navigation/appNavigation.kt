@@ -9,7 +9,9 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.statussaver.ui.screen.whatsapp_business.LocalMusicScreen
+import com.example.statussaver.ui.screen.saved_files.SavedFileScreen
+import com.example.statussaver.ui.screen.whatsapp.Whatsapp
+import com.example.statussaver.ui.screen.whatsapp_business.WABusiness
 import com.example.statussaver.viewmodel.MainViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -23,21 +25,21 @@ fun MainScreenNavigation(
     navController: NavHostController,
 ) {
     // val mainViewModel = hiltViewModel<MainViewModel>()
-    //  val songListViewModel = hiltViewModel<SongListScreenViewModel>()
     val mainViewModel = MainViewModel()
-    NavHost(navController, startDestination = MainScreen.Local.route!!) {
+    NavHost(navController, startDestination = MainScreen.WABusiness.route) {
         //local
-        composable(MainScreen.Local.route) {
-            LocalMusicScreen(
+        composable(MainScreen.WABusiness.route) {
+            WABusiness(
                 mainViewModel
             )
         }
-//        //online
-//        composable(MainScreen.Online.route!!) {
-//            OnlineMusicScreen()
-//        }
-
-
+        //online
+        composable(MainScreen.Whatsapp.route) {
+            Whatsapp(mainViewModel = mainViewModel)
+        }
+        composable(MainScreen.SavedFile.route) {
+            SavedFileScreen()
+        }
     }
 
 }

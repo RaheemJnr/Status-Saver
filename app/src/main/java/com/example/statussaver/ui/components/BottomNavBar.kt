@@ -27,15 +27,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 @ExperimentalAnimationApi
 @Composable
 fun BottomNav(navController: NavController) {
-
     //
-    val dimension by remember {
-        mutableStateOf(arrayListOf(35, 35))
-    }
-
+    val dimension by remember { mutableStateOf(arrayListOf(35, 35, 35)) }
     HomeBottomItem(dimension, navController)
-
-
 }
 
 @Composable
@@ -47,7 +41,7 @@ private fun HomeBottomItem(
     val currentRoute = navBackStackEntry?.destination?.route
     BottomNavigation(
         modifier = Modifier
-            .padding(40.dp, 0.dp, 30.dp, 0.dp)
+            .padding(10.dp, 0.dp, 10.dp, 0.dp)
             .height(100.dp),
         backgroundColor = Color.White,
         elevation = 0.dp
@@ -57,29 +51,25 @@ private fun HomeBottomItem(
                 alwaysShowLabel = true,
                 modifier = Modifier,
                 icon = {
-                    it.icon?.let { icon ->
-                        Icon(
-                            painter = painterResource(id = icon),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .width(dimension[it.index!!].dp)
-                                .height(dimension[it.index].dp)
-                                .animateContentSize(),
-                        )
-                    }
+                    Icon(
+                        painter = painterResource(id = it.icon),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .width(dimension[it.index].dp)
+                            .height(dimension[it.index].dp)
+                            .animateContentSize(),
+                    )
                 },
                 label = {
-                    it.title?.let { labelValue ->
-                        Text(
-                            text = labelValue,
-                            color = Color.LightGray
-                        )
-                    }
+                    Text(
+                        text = it.title,
+                        color = Color.LightGray
+                    )
                 },
                 //
                 selected = currentRoute == it.route,
                 onClick = {
-                    it.route?.let { destination ->
+                    it.route.let { destination ->
                         navController.navigate(destination) {
                             // Pop up to the start destination of the graph to
                             // avoid building up a large stack of destinations
@@ -109,4 +99,4 @@ private fun HomeBottomItem(
 }
 
 
-val items = listOf(MainScreen.Local, MainScreen.Gap, MainScreen.Online)
+val items = listOf(MainScreen.WABusiness, MainScreen.Whatsapp, MainScreen.SavedFile)
