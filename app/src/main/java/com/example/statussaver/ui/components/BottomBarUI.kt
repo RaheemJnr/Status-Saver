@@ -9,13 +9,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.statussaver.viewmodel.MainViewModel
 
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun BottomBarUI(
-    mainViewModel: MainViewModel,
     navController: NavHostController
 ) {
     Column {

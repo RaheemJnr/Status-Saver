@@ -17,22 +17,14 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.ActivityCompat
 import com.example.statussaver.ui.theme.StatusSaverTheme
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.example.statussaver.utilz.Constants.MANAGE_EXTERNAL_STORAGE_PERMISSION
+import com.example.statussaver.utilz.Constants.PERMISSIONS
+import com.example.statussaver.utilz.Constants.REQUEST_PERMISSIONS
 import java.util.*
 
-private const val REQUEST_PERMISSIONS = 1005
-val PERMISSIONS = arrayOf(
-    Manifest.permission.READ_EXTERNAL_STORAGE,
-    Manifest.permission.WRITE_EXTERNAL_STORAGE
-)
-private const val MANAGE_EXTERNAL_STORAGE_PERMISSION = "android:manage_external_storage"
 
 @SuppressLint("CustomSplashScreen")
 class SplashScreen : ComponentActivity() {

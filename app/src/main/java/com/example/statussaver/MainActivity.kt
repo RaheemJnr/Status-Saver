@@ -1,6 +1,5 @@
 package com.example.statussaver
 
-import android.Manifest
 import android.app.ActivityManager
 import android.app.AppOpsManager
 import android.content.pm.PackageManager
@@ -21,18 +20,15 @@ import com.example.statussaver.model.Status
 import com.example.statussaver.ui.components.MainScreen
 import com.example.statussaver.ui.theme.StatusSaverTheme
 import com.example.statussaver.utilz.Common
+import com.example.statussaver.utilz.Constants.MANAGE_EXTERNAL_STORAGE_PERMISSION
+import com.example.statussaver.utilz.Constants.PERMISSIONS
+import com.example.statussaver.utilz.Constants.REQUEST_PERMISSIONS
 import com.example.statussaver.viewmodel.MainViewModel
 import java.io.File
 import java.util.*
 
 
-private const val REQUEST_PERMISSIONS = 1234
-private val PERMISSION = arrayOf(
-    Manifest.permission.READ_EXTERNAL_STORAGE,
-    Manifest.permission.WRITE_EXTERNAL_STORAGE
-)
 
-private const val MANAGE_EXTERNAL_STORAGE_PERMISSION = "android:manage_external_storage"
 
 //
 class MainActivity : ComponentActivity() {
@@ -80,7 +76,7 @@ class MainActivity : ComponentActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             return checkStorageApi30()
         }
-        for (permissions in PERMISSION) {
+        for (permissions in PERMISSIONS) {
             if (ActivityCompat.checkSelfPermission(
                     applicationContext,
                     permissions
@@ -108,7 +104,7 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         if (arePermissionDenied()) {
-            requestPermissions(PERMISSION, REQUEST_PERMISSIONS)
+            requestPermissions(PERMISSIONS, REQUEST_PERMISSIONS)
             return
         }
         Common.APP_DIR = Environment.getExternalStorageDirectory().path +
