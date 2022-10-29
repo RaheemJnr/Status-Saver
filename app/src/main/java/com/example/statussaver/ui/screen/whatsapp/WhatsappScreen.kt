@@ -23,6 +23,7 @@ fun Whatsapp(
     //context
     val imageStatus = mainViewModel.whatsappImageStatus.observeAsState()
     val videoStatus = mainViewModel.whatsappVideoStatus.observeAsState()
+    val isRefreshing = mainViewModel.isRefreshing
     mainViewModel.getWhatsappStatus()
     mainViewModel.getWhatsappStatusVideo()
     val context = LocalContext.current
@@ -42,7 +43,9 @@ fun Whatsapp(
                 Spacer(modifier = Modifier.height(4.dp))
                 //
                 LocalTabLayout(
+                    mainViewModel = mainViewModel,
                     pagerState = pagerState,
+                    isRefreshing = isRefreshing,
                     scope = scope,
                     imageStatus = imageStatus,
                     videoStatus = videoStatus

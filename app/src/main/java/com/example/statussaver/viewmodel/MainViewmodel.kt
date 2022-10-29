@@ -10,12 +10,31 @@ import com.example.statussaver.utilz.Constants.BUSINESS_STATUS_DIRECTORY
 import com.example.statussaver.utilz.Constants.BUSINESS_STATUS_DIRECTORY_NEW
 import com.example.statussaver.utilz.Constants.WHATSAPP_STATUS_DIRECTORY
 import com.example.statussaver.utilz.Constants.WHATSAPP_STATUS_DIRECTORY_NEW
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 
 
 class MainViewModel() : ViewModel() {
+
+    private val _isRefreshing = MutableStateFlow(false)
+
+    val isRefreshing: StateFlow<Boolean>
+        get() = _isRefreshing.asStateFlow()
+
+    fun refresh() {
+        // This doesn't handle multiple 'refreshing' tasks, don't use this
+        viewModelScope.launch {
+            // A fake 2 second 'refresh'
+            _isRefreshing.emit(true)
+            delay(2000)
+            _isRefreshing.emit(false)
+        }
+    }
 
     private val _waBusinessImageStatus = MutableLiveData<List<Status>>()
     val waBusinessImageStatus: LiveData<List<Status>> get() = _waBusinessImageStatus

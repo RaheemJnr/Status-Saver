@@ -23,6 +23,7 @@ fun WABusiness(
     //context
     val imageStatus = mainViewModel.waBusinessImageStatus.observeAsState()
     val videoStatus = mainViewModel.waBusinessVideoStatus.observeAsState()
+    val isRefreshing = mainViewModel.isRefreshing
     mainViewModel.getWABusinessStatus()
     mainViewModel.getWABusinessStatusVideo()
     //
@@ -43,8 +44,10 @@ fun WABusiness(
                 Spacer(modifier = Modifier.height(4.dp))
                 //
                 LocalTabLayout(
+                    mainViewModel = mainViewModel,
                     pagerState = pagerState,
                     scope = scope,
+                    isRefreshing = isRefreshing,
                     imageStatus = imageStatus,
                     videoStatus = videoStatus
                 )

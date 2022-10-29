@@ -13,6 +13,7 @@ import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,21 +21,29 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.statussaver.model.Status
 import com.example.statussaver.utilz.TabItems
+import com.example.statussaver.viewmodel.MainViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun LocalTabLayout(
+    mainViewModel: MainViewModel,
     pagerState: PagerState,
     scope: CoroutineScope,
+    isRefreshing: StateFlow<Boolean>,
     imageStatus: State<List<Status>?>,
     videoStatus: State<List<Status>?>
 ) {
+
+
     val tabsTitles =
         remember { listOf(TabItems("Images"), TabItems("Videos")) }
 
@@ -47,8 +56,46 @@ fun LocalTabLayout(
             0 -> {
                 //whatsapp business
                 Box(modifier = Modifier) {
+                    SwipeRefresh(
+                        state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
+                        onRefresh = {
+                            mainViewModel.refresh()
+                            mainViewModel.getWABusinessStatus()
+                            mainViewModel.getWhatsappStatus()
+                        },
+                    ) {
+                        LazyColumn {
+                            imageStatus.value?.let { list ->
+                                items(
+                                    items = list,
+                                    key = {
+                                        it.title
+                                    }
+                                ) { item: Status ->
+                                    Text(
+                                        text = "$item",
+                                        modifier = Modifier.fillMaxSize()
+                                    )
+                                }
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+            1 -> {
+                SwipeRefresh(
+                    state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
+                    onRefresh = {
+                        mainViewModel.refresh()
+                        mainViewModel.getWABusinessStatus()
+                        mainViewModel.getWhatsappStatus()
+                    },
+                ) {
                     LazyColumn {
-                        imageStatus.value?.let { list ->
+                        videoStatus.value?.let { list ->
                             items(
                                 items = list,
                                 key = {
@@ -65,28 +112,6 @@ fun LocalTabLayout(
                     }
                 }
             }
-
-            ///
-            1 -> {
-                LazyColumn {
-                    videoStatus.value?.let { list ->
-                        items(
-                            items = list,
-                            key = {
-                                it.title
-                            }
-                        ) { item: Status ->
-                            Text(
-                                text = "$item",
-                                modifier = Modifier.fillMaxSize()
-                            )
-                        }
-                    }
-
-                }
-
-            }
-
         }
     }
 }
