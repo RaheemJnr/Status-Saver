@@ -1,6 +1,7 @@
 package com.example.statussaver
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.app.AppOpsManager
 import android.content.Intent
@@ -33,6 +34,7 @@ val PERMISSIONS = arrayOf(
 )
 private const val MANAGE_EXTERNAL_STORAGE_PERMISSION = "android:manage_external_storage"
 
+@SuppressLint("CustomSplashScreen")
 class SplashScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -151,18 +153,5 @@ class SplashScreen : ComponentActivity() {
             }
         }
         return false
-    }
-}
-
-@Composable
-fun Greeting2(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview2() {
-    StatusSaverTheme {
-        Greeting2("Android")
     }
 }

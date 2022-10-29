@@ -61,6 +61,12 @@ dependencies {
     //
     //accompanist permission
     implementation "com.google.accompanist:accompanist-permissions:0.19.0"
+    //
+    //carousel pager
+    implementation "com.google.accompanist:accompanist-pager:0.23.0"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.23.0"
+
+    //
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
