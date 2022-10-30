@@ -26,8 +26,6 @@ fun Whatsapp(
     val isRefreshing = mainViewModel.isRefreshing
     Log.d("whatsapp_image", "${imageStatus.value}")
     Log.d("whatsapp_video", "${videoStatus.value}")
-    mainViewModel.getWhatsappStatus()
-    mainViewModel.getWhatsappStatusVideo()
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
     //root composable

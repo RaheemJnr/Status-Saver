@@ -57,8 +57,7 @@ fun LocalTabLayout(
                         state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
                         onRefresh = {
                             mainViewModel.refresh()
-                            mainViewModel.getWABusinessStatus()
-                            mainViewModel.getWhatsappStatus()
+                            mainViewModel.getWABusinessStatusImage()
                         },
                     ) {
                         LazyColumn {
@@ -70,7 +69,11 @@ fun LocalTabLayout(
                                         it.path
                                     }
                                 ) {
-                                    ImageLayout(status = it)
+                                    Text(
+                                        text = "$it",
+                                        modifier = Modifier.fillMaxSize()
+                                    )
+                                   // ImageLayout(status = it)
                                 }
                             }
                         }
@@ -82,7 +85,6 @@ fun LocalTabLayout(
                     state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
                     onRefresh = {
                         mainViewModel.refresh()
-                        mainViewModel.getWhatsappStatusVideo()
                         mainViewModel.getWABusinessStatusVideo()
                     },
                 ) {

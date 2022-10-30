@@ -1,6 +1,5 @@
 package com.example.statussaver.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,8 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.statussaver.model.Status
 import com.example.statussaver.utilz.Constants.BUSINESS_STATUS_DIRECTORY
 import com.example.statussaver.utilz.Constants.BUSINESS_STATUS_DIRECTORY_NEW
-import com.example.statussaver.utilz.Constants.WHATSAPP_STATUS_DIRECTORY
-import com.example.statussaver.utilz.Constants.WHATSAPP_STATUS_DIRECTORY_NEW
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -50,78 +47,112 @@ class MainViewModel() : ViewModel() {
     val whatsappVideoStatus: LiveData<List<Status>> get() = _whatsappVideoStatus
 
 
-    fun getWABusinessStatus() {
+    fun getWABusinessStatusImage() {
         if (BUSINESS_STATUS_DIRECTORY.exists()) {
-            executeForImage(BUSINESS_STATUS_DIRECTORY)
+            executeForBusinessImage(BUSINESS_STATUS_DIRECTORY)
         } else if (BUSINESS_STATUS_DIRECTORY_NEW.exists()) {
-            executeForImage(BUSINESS_STATUS_DIRECTORY_NEW)
+            executeForBusinessImage(BUSINESS_STATUS_DIRECTORY_NEW)
         }
     }
+
     fun getWABusinessStatusVideo() {
         if (BUSINESS_STATUS_DIRECTORY.exists()) {
-            executeForVideo(BUSINESS_STATUS_DIRECTORY)
+            executeForBusinessVideo(BUSINESS_STATUS_DIRECTORY)
         } else if (BUSINESS_STATUS_DIRECTORY_NEW.exists()) {
-            executeForVideo(BUSINESS_STATUS_DIRECTORY_NEW)
+            executeForBusinessVideo(BUSINESS_STATUS_DIRECTORY_NEW)
         }
     }
 
-    fun getWhatsappStatus() {
-        if (WHATSAPP_STATUS_DIRECTORY.exists()) {
-            Log.d("WhatsApp", "Folder exist")
-            executeForImage(WHATSAPP_STATUS_DIRECTORY)
-        } else if (WHATSAPP_STATUS_DIRECTORY.exists()) {
-            Log.d("WhatsApp", "new Folder exist")
-            executeForImage(WHATSAPP_STATUS_DIRECTORY)
-        }
-    }
+//    fun getWhatsappStatus() {
+//        if (WHATSAPP_STATUS_DIRECTORY.exists()) {
+//            Log.d("WhatsApp", "Folder exist")
+//            executeForWhatsappImage(WHATSAPP_STATUS_DIRECTORY)
+//        } else if (WHATSAPP_STATUS_DIRECTORY.exists()) {
+//            Log.d("WhatsApp", "new Folder exist")
+//            executeForWhatsappImage(WHATSAPP_STATUS_DIRECTORY)
+//        }
+//    }
 
 
+//    fun getWhatsappStatusVideo() {
+//        if (WHATSAPP_STATUS_DIRECTORY.exists()) {
+//            Log.d("WhatsApp", "Folder exist")
+//            executeForWhatsappVideo(WHATSAPP_STATUS_DIRECTORY)
+//        } else if (WHATSAPP_STATUS_DIRECTORY_NEW.exists()) {
+//            Log.d("WhatsApp", "new Folder exist")
+//            executeForWhatsappVideo(WHATSAPP_STATUS_DIRECTORY_NEW)
+//        }
+//    }
 
 
-    fun getWhatsappStatusVideo() {
-        if (WHATSAPP_STATUS_DIRECTORY.exists()) {
-            executeForVideo(WHATSAPP_STATUS_DIRECTORY)
-        } else if (WHATSAPP_STATUS_DIRECTORY_NEW.exists()) {
-            executeForVideo(WHATSAPP_STATUS_DIRECTORY_NEW)
-        }
-    }
-
-
-    private fun executeForImage(wAFolder: File) {
-        val imageStatus = arrayListOf<Status>()
+    private fun executeForBusinessImage(wAFolder: File) {
+        val businessImageStatus = arrayListOf<Status>()
         viewModelScope.launch {
             val statusFiles: Array<File>? = wAFolder.listFiles()
+            businessImageStatus.clear()
             if (statusFiles != null && statusFiles.isNotEmpty()) {
                 Arrays.sort(statusFiles)
                 for (file in statusFiles) {
                     val status = Status(file = file, title = file.name, path = file.absolutePath)
                     if (!status.isVideo && status.title.endsWith(".jpg")) {
-                        imageStatus.add(status)
-                        _waBusinessImageStatus.postValue(imageStatus)
-                        _whatsappImageStatus.postValue(imageStatus)
+                        businessImageStatus.add(status)
+                        _whatsappImageStatus.postValue(businessImageStatus)
                     }
                 }
             }
         }
 
     }
-
-    private fun executeForVideo(waFolder: File) {
-        val videoStatus = arrayListOf<Status>()
+    private fun executeForBusinessVideo(waFolder: File) {
+        val businessVideoStatus = arrayListOf<Status>()
         viewModelScope.launch {
             val statusFiles = waFolder.listFiles()
+            businessVideoStatus.clear()
             if (statusFiles != null && statusFiles.isNotEmpty()) {
                 Arrays.sort(statusFiles)
                 for (file in statusFiles) {
                     val status = Status(file, file.name, file.absolutePath)
                     if (status.isVideo) {
-                        videoStatus.add(status)
-                        _waBusinessVideoStatus.postValue(videoStatus)
-                        _whatsappVideoStatus.postValue(videoStatus)
+                        businessVideoStatus.add(status)
+                        _waBusinessVideoStatus.postValue(businessVideoStatus)
                     }
                 }
             }
         }
     }
+
+//    private fun executeForWhatsappImage(wAFolder: File) {
+//        val whatsappImageStatus = arrayListOf<Status>()
+//        viewModelScope.launch {
+//            val statusFiles: Array<File>? = wAFolder.listFiles()
+//            if (statusFiles != null && statusFiles.isNotEmpty()) {
+//                Arrays.sort(statusFiles)
+//                for (file in statusFiles) {
+//                    val status = Status(file = file, title = file.name, path = file.absolutePath)
+//                    if (!status.isVideo && status.title.endsWith(".jpg")) {
+//                        whatsappImageStatus.add(status)
+//                        _whatsappImageStatus.postValue(whatsappImageStatus)
+//                    }
+//                }
+//            }
+//        }
+//
+//    }
+//    private fun executeForWhatsappVideo(waFolder: File) {
+//        val whatsappVideoStatus = arrayListOf<Status>()
+//        viewModelScope.launch {
+//            val statusFiles = waFolder.listFiles()
+//            if (statusFiles != null && statusFiles.isNotEmpty()) {
+//                Arrays.sort(statusFiles)
+//                for (file in statusFiles) {
+//                    val status = Status(file, file.name, file.absolutePath)
+//                    if (status.isVideo) {
+//                        whatsappVideoStatus.add(status)
+//                        _whatsappVideoStatus.postValue(whatsappVideoStatus)
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 }
