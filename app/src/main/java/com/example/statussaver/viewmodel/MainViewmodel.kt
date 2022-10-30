@@ -40,11 +40,11 @@ class MainViewModel() : ViewModel() {
     val waBusinessVideoStatus: LiveData<List<Status>> get() = _waBusinessVideoStatus
 
     //
-    private val _whatsappImageStatus = MutableLiveData<List<Status>>()
-    val whatsappImageStatus: LiveData<List<Status>> get() = _whatsappImageStatus
-
-    private val _whatsappVideoStatus = MutableLiveData<List<Status>>()
-    val whatsappVideoStatus: LiveData<List<Status>> get() = _whatsappVideoStatus
+//    private val _whatsappImageStatus = MutableLiveData<List<Status>>()
+//    val whatsappImageStatus: LiveData<List<Status>> get() = _whatsappImageStatus
+//
+//    private val _whatsappVideoStatus = MutableLiveData<List<Status>>()
+//    val whatsappVideoStatus: LiveData<List<Status>> get() = _whatsappVideoStatus
 
 
     fun getWABusinessStatusImage() {
@@ -96,7 +96,7 @@ class MainViewModel() : ViewModel() {
                     val status = Status(file = file, title = file.name, path = file.absolutePath)
                     if (!status.isVideo && status.title.endsWith(".jpg")) {
                         businessImageStatus.add(status)
-                        _whatsappImageStatus.postValue(businessImageStatus)
+                        _waBusinessImageStatus.postValue(businessImageStatus)
                     }
                 }
             }
