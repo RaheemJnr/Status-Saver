@@ -52,7 +52,7 @@ fun LocalTabLayout(
     ) { page ->
         when (page) {
             0 -> {
-                Box(modifier = Modifier) {
+                Box(modifier = Modifier.fillMaxSize()) {
                     SwipeRefresh(
                         state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
                         onRefresh = {
@@ -66,18 +66,14 @@ fun LocalTabLayout(
                                 items(
                                     items = list,
                                     key = {
-                                        it.title
+                                        it.path
                                     }
                                 ) { item: Status ->
-                                    Text(
-                                        text = "$item",
-                                        modifier = Modifier.fillMaxSize()
-                                    )
+                                    ImageLayout(status = item)
                                 }
                             }
                         }
                     }
-
                 }
             }
             1 -> {
@@ -94,7 +90,7 @@ fun LocalTabLayout(
                             items(
                                 items = list,
                                 key = {
-                                    it.title
+                                    it.path
                                 }
                             ) { item: Status ->
                                 Text(
