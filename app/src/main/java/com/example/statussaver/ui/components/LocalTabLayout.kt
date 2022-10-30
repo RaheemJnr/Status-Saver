@@ -1,6 +1,5 @@
 package com.example.statussaver.ui.components
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -71,12 +70,7 @@ fun LocalTabLayout(
                                         it.path
                                     }
                                 ) {
-                                    Text(
-                                    text = "$it",
-                                    modifier = Modifier.fillMaxSize()
-                                )
-//                                    Log.d("Business_Layout", "$it")
-//                                    ImageLayout(status = it)
+                                    ImageLayout(status = it)
                                 }
                             }
                         }
@@ -100,12 +94,11 @@ fun LocalTabLayout(
                                     it.path
                                 }
                             ) {
-                                Log.d("Business_layout_Video", "$it")
                                 Text(
                                     text = "$it",
                                     modifier = Modifier.fillMaxSize()
                                 )
-                                //ImageLayout(status = it)
+                                ImageLayout(status = it)
                             }
                         }
 

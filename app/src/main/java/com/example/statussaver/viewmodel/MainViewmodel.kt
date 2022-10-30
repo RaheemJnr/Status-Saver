@@ -52,11 +52,16 @@ class MainViewModel() : ViewModel() {
 
     fun getWABusinessStatus() {
         if (BUSINESS_STATUS_DIRECTORY.exists()) {
-            Log.d("WhatsApp", "Folder exist")
             executeForImage(BUSINESS_STATUS_DIRECTORY)
         } else if (BUSINESS_STATUS_DIRECTORY_NEW.exists()) {
-            Log.d("WhatsApp", "new Folder exist")
             executeForImage(BUSINESS_STATUS_DIRECTORY_NEW)
+        }
+    }
+    fun getWABusinessStatusVideo() {
+        if (BUSINESS_STATUS_DIRECTORY.exists()) {
+            executeForVideo(BUSINESS_STATUS_DIRECTORY)
+        } else if (BUSINESS_STATUS_DIRECTORY_NEW.exists()) {
+            executeForVideo(BUSINESS_STATUS_DIRECTORY_NEW)
         }
     }
 
@@ -71,13 +76,7 @@ class MainViewModel() : ViewModel() {
     }
 
 
-    fun getWABusinessStatusVideo() {
-        if (BUSINESS_STATUS_DIRECTORY.exists()) {
-            executeForVideo(BUSINESS_STATUS_DIRECTORY)
-        } else if (BUSINESS_STATUS_DIRECTORY_NEW.exists()) {
-            executeForVideo(BUSINESS_STATUS_DIRECTORY_NEW)
-        }
-    }
+
 
     fun getWhatsappStatusVideo() {
         if (WHATSAPP_STATUS_DIRECTORY.exists()) {
@@ -99,6 +98,7 @@ class MainViewModel() : ViewModel() {
                     if (!status.isVideo && status.title.endsWith(".jpg")) {
                         imageStatus.add(status)
                         _waBusinessImageStatus.postValue(imageStatus)
+                        _whatsappImageStatus.postValue(imageStatus)
                     }
                 }
             }
@@ -117,6 +117,7 @@ class MainViewModel() : ViewModel() {
                     if (status.isVideo) {
                         videoStatus.add(status)
                         _waBusinessVideoStatus.postValue(videoStatus)
+                        _whatsappVideoStatus.postValue(videoStatus)
                     }
                 }
             }

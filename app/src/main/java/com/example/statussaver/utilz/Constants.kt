@@ -25,13 +25,11 @@ object Constants {
     )
 
     val WHATSAPP_STATUS_DIRECTORY = File(
-        Environment.getExternalStorageDirectory().toString() +
-                File.separator + "WhatsApp/Media/.Statuses"
+        Environment.getExternalStorageDirectory().toString() + File.separator + "WhatsApp/Media/.Statuses"
     )
 
     val WHATSAPP_STATUS_DIRECTORY_NEW = File(
-        (Environment.getExternalStorageDirectory().toString() +
-                File.separator + "Android/media/com.whatsapp/WhatsApp/Media/.Statuses")
+        (Environment.getExternalStorageDirectory().toString() + File.separator + "Android/media/com.whatsapp/WhatsApp/Media/.Statuses")
     )
 }
 
