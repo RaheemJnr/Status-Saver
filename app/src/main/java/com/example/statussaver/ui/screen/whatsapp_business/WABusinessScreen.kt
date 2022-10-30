@@ -32,7 +32,9 @@ fun WABusiness(
     val scope = rememberCoroutineScope()
     //
     Column(
-        Modifier.fillMaxSize()
+        Modifier
+            .fillMaxSize()
+            .padding(start = 1.dp, end = 1.dp, bottom = 62.dp)
     ) {
         Scaffold(
             topBar = { }

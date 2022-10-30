@@ -11,3 +11,10 @@ data class Status(
     var isVideo: Boolean = file.name.endsWith(MP4)
 )
 
+val emptyStatus = Status(
+    file = File(""),
+    title = "",
+    path = "",
+    isVideo = false,
+
+    )

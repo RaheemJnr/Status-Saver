@@ -31,6 +31,7 @@ fun Whatsapp(
     //root composable
     Column(
         Modifier.fillMaxSize()
+            .padding( bottom = 62.dp)
     ) {
         Scaffold(
             topBar = { }

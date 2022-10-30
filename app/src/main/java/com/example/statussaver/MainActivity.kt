@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.os.Handler
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
@@ -16,7 +15,6 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.statussaver.model.Status
 import com.example.statussaver.ui.components.MainScreen
 import com.example.statussaver.ui.theme.StatusSaverTheme
 import com.example.statussaver.utilz.Common
@@ -30,11 +28,6 @@ import java.util.*
 
 //
 class MainActivity : ComponentActivity() {
-
-    private val imagesList: ArrayList<Status> = arrayListOf()
-    var items = ""
-    private val handler = Handler()
-
     //
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {

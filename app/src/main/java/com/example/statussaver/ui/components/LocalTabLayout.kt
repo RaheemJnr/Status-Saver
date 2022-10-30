@@ -71,9 +71,11 @@ fun LocalTabLayout(
                                     items = list,
                                     key = {
                                         it.path
+                                    },
+                                    contentType = {
+                                        it.path
                                     }
                                 ) {
-//
                                     ImageLayout(status = it)
                                 }
                             }
@@ -96,6 +98,9 @@ fun LocalTabLayout(
                             items(
                                 items = list,
                                 key = {
+                                    it.path
+                                },
+                                contentType = {
                                     it.path
                                 }
                             ) {
