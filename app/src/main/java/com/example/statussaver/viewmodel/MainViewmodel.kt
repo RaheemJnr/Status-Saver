@@ -88,8 +88,8 @@ class MainViewModel() : ViewModel() {
     }
 
 
-    private fun executeForImage(wAFolder: File):List<Status> {
-        val list = mutableListOf<Status>()
+    private fun executeForImage(wAFolder: File) {
+        val imageStatus = arrayListOf<Status>()
         viewModelScope.launch {
             val statusFiles: Array<File>? = wAFolder.listFiles()
             if (statusFiles != null && statusFiles.isNotEmpty()) {
@@ -97,17 +97,17 @@ class MainViewModel() : ViewModel() {
                 for (file in statusFiles) {
                     val status = Status(file = file, title = file.name, path = file.absolutePath)
                     if (!status.isVideo && status.title.endsWith(".jpg")) {
-                        list += status
-                        Log.d("statusss", "${listOf(statusFiles)}")
+                        imageStatus.add(status)
+                        _waBusinessImageStatus.postValue(imageStatus)
                     }
                 }
             }
         }
-        return list
 
     }
 
     private fun executeForVideo(waFolder: File) {
+        val videoStatus = arrayListOf<Status>()
         viewModelScope.launch {
             val statusFiles = waFolder.listFiles()
             if (statusFiles != null && statusFiles.isNotEmpty()) {
@@ -115,8 +115,8 @@ class MainViewModel() : ViewModel() {
                 for (file in statusFiles) {
                     val status = Status(file, file.name, file.absolutePath)
                     if (status.isVideo) {
-                        _waBusinessVideoStatus.postValue(listOf(status))
-                        //Log.d("statusss", "$statusf")
+                        videoStatus.add(status)
+                        _waBusinessVideoStatus.postValue(videoStatus)
                     }
                 }
             }

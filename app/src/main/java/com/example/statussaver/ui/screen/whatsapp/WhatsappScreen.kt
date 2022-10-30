@@ -48,8 +48,6 @@ fun Whatsapp(
                     imageStatus = imageStatus,
                     videoStatus = videoStatus
                 )
-
-
             }
 
         }

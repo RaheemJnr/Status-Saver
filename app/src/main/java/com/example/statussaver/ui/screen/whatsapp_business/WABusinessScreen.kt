@@ -1,5 +1,6 @@
 package com.example.statussaver.ui.screen.whatsapp_business
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -26,6 +27,8 @@ fun WABusiness(
     val isRefreshing = mainViewModel.isRefreshing
     mainViewModel.getWABusinessStatus()
     mainViewModel.getWABusinessStatusVideo()
+    Log.d("Business_Screen_image", "${imageStatus.value}")
+    Log.d("Business_Screen_video", "${videoStatus.value}")
     //
     val context = LocalContext.current
     val pagerState = rememberPagerState()
