@@ -104,11 +104,7 @@ fun LocalTabLayout(
                                     it.path
                                 }
                             ) {
-                                Text(
-                                    text = "$it",
-                                    modifier = Modifier.fillMaxSize()
-                                )
-                                // ImageLayout(status = it)
+                              VideoLayout(status = it)
                             }
                         }
                     }
