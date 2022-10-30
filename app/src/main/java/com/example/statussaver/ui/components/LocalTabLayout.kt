@@ -73,11 +73,8 @@ fun LocalTabLayout(
                                         it.path
                                     }
                                 ) {
-                                    Text(
-                                        text = "$it",
-                                        modifier = Modifier.fillMaxSize()
-                                    )
-                                    // ImageLayout(status = it)
+//
+                                    ImageLayout(status = it)
                                 }
                             }
                         }
@@ -95,7 +92,6 @@ fun LocalTabLayout(
                     LazyVerticalGrid(
                         columns = GridCells.Adaptive(minSize = 128.dp)
                     ) {
-
                         videoStatus.value?.let { list ->
                             items(
                                 items = list,
