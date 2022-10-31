@@ -33,7 +33,7 @@ fun VideoLayout(
     status: Status
 ) {
     val context = LocalContext.current
-    val painterr = ImageLoader.Builder(context)
+    val imageLoader = ImageLoader.Builder(context)
         .components {
             add(VideoFrameDecoder.Factory())
         }.crossfade(true)
@@ -41,7 +41,7 @@ fun VideoLayout(
 
     val painter = rememberAsyncImagePainter(
         model = status.file,
-        imageLoader = painterr,
+        imageLoader = imageLoader,
         filterQuality = FilterQuality.High
     )
 
