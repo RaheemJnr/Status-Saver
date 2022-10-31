@@ -28,10 +28,10 @@ object Common {
         } else {
             "IMG_$currentDateTime.jpg"
         }
-        //val destFile = File(file.toString() + File.separator + fileName)
+        val destFile = File(file.toString() + File.separator + fileName)
         try {
-//            org.apache.commons.io.FileUtils.copyFile(status.file, destFile)
-//            destFile.setLastModified(System.currentTimeMillis())
+           org.apache.commons.io.FileUtils.copyFile(status.file, destFile)
+           destFile.setLastModified(System.currentTimeMillis())
             if (file != null) {
                 SingleMediaScanner(context, file)
             }

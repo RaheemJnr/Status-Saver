@@ -19,8 +19,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.statussaver.model.Status
+import com.example.statussaver.utilz.Common
 import com.example.statussaver.utilz.TabItems
 import com.example.statussaver.viewmodel.MainViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -45,6 +47,8 @@ fun LocalTabLayout(
 ) {
     val tabsTitles =
         remember { listOf(TabItems("Images"), TabItems("Videos")) }
+    //
+    val context = LocalContext.current
 
     TabRowComposable(pagerState, tabsTitles, scope)
     HorizontalPager(
@@ -76,7 +80,9 @@ fun LocalTabLayout(
                                         it.path
                                     }
                                 ) {
-                                    ImageLayout(status = it)
+                                    ImageLayout(status = it) {
+                                        Common.copyFile(status = it, context = context)
+                                    }
                                 }
                             }
                         }
@@ -104,7 +110,7 @@ fun LocalTabLayout(
                                     it.path
                                 }
                             ) {
-                              VideoLayout(status = it)
+                                VideoLayout(status = it)
                             }
                         }
                     }

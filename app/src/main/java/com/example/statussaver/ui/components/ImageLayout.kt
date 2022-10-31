@@ -28,11 +28,12 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.statussaver.R
 import com.example.statussaver.model.Status
-import java.io.File
+import com.example.statussaver.utilz.Common
 
 @Composable
 fun ImageLayout(
-    status: Status
+    status: Status,
+    onSaveClicked: () -> Unit
 ) {
     val context = LocalContext.current
     var editable by rememberSaveable { mutableStateOf(false) }
@@ -80,8 +81,6 @@ fun ImageLayout(
                                     .height(35.dp)
                                     .alpha(0.4f)
                                     .background(Color.Black)
-
-
                             ) {
                                 Image(
                                     painter = painterResource(id = R.drawable.download_icon),
@@ -91,8 +90,13 @@ fun ImageLayout(
                                         .fillMaxWidth()
                                         .size(30.dp)
                                         .clickable {
+                                            onSaveClicked()
                                             Toast
-                                                .makeText(context, "clicked", Toast.LENGTH_SHORT)
+                                                .makeText(
+                                                    context,
+                                                    "Saved to ${Common.APP_DIR}",
+                                                    Toast.LENGTH_SHORT
+                                                )
                                                 .show()
                                         },
                                     alpha = 1f,
@@ -103,27 +107,9 @@ fun ImageLayout(
                     }
                 )
             }
-
-
         }
     }
 
 }
 
-
-val emptyStatus = Status(
-    file = File(""),
-    title = "",
-    path = "",
-    isVideo = false,
-
-    )
-
-//@Preview(showBackground = true)
-//@Composable
-//fun ImageLayoutPreview() {
-//    ImageLayout(
-//        status = emptyStatus
-//    )
-//}
 
