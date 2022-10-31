@@ -21,7 +21,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -31,10 +30,12 @@ import coil.compose.rememberAsyncImagePainter
 import coil.decode.VideoFrameDecoder
 import com.example.statussaver.R
 import com.example.statussaver.model.Status
+import com.example.statussaver.utilz.Common
 
 @Composable
 fun VideoLayout(
-    status: Status
+    status: Status,
+    onSaveClicked: () -> Unit
 ) {
     val context = LocalContext.current
     var editable by rememberSaveable { mutableStateOf(false) }
@@ -48,7 +49,7 @@ fun VideoLayout(
     val painter = rememberAsyncImagePainter(
         model = status.file,
         imageLoader = imageLoader,
-        filterQuality = FilterQuality.High
+        contentScale = ContentScale.Crop
     )
     Column(
         modifier = Modifier
@@ -82,7 +83,8 @@ fun VideoLayout(
                     content = {
                         Box(
                             contentAlignment = Alignment.BottomCenter,
-                            modifier = Modifier.align(Alignment.BottomCenter)
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
                                 .alpha(0.4f)
                         ) {
 
@@ -92,7 +94,7 @@ fun VideoLayout(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(35.dp)
-                                   // .alpha(0.4f)
+                                    // .alpha(0.4f)
                                     .background(Color.Black)
 
 
@@ -105,8 +107,13 @@ fun VideoLayout(
                                         .fillMaxWidth()
                                         .size(30.dp)
                                         .clickable {
+                                            onSaveClicked()
                                             Toast
-                                                .makeText(context, "clicked", Toast.LENGTH_SHORT)
+                                                .makeText(
+                                                    context,
+                                                    "Saved to ${Common.APP_DIR}",
+                                                    Toast.LENGTH_SHORT
+                                                )
                                                 .show()
                                         },
                                     alpha = 1f,

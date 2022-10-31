@@ -24,9 +24,9 @@ object Common {
         val sdf = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
         val currentDateTime = sdf.format(Date())
         fileName = if (status.isVideo) {
-            "VID_$currentDateTime.mp4"
+            "STATUS_VID_$currentDateTime.mp4"
         } else {
-            "IMG_$currentDateTime.jpg"
+            "STATUS_IMG_$currentDateTime.jpg"
         }
         val destFile = File(file.toString() + File.separator + fileName)
         try {

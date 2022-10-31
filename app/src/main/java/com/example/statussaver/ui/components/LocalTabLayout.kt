@@ -110,7 +110,9 @@ fun LocalTabLayout(
                                     it.path
                                 }
                             ) {
-                                VideoLayout(status = it)
+                                VideoLayout(status = it) {
+                                    Common.copyFile(status = it, context = context)
+                                }
                             }
                         }
                     }
