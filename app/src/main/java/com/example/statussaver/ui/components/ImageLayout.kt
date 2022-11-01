@@ -1,6 +1,11 @@
 package com.example.statussaver.ui.components
 
+import android.content.Context
+import android.net.Uri
+import android.os.Build
+import android.os.storage.StorageManager
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
@@ -25,6 +30,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
 import coil.compose.rememberAsyncImagePainter
 import com.example.statussaver.R
 import com.example.statussaver.model.Status
@@ -35,8 +41,9 @@ fun ImageLayout(
     status: Status,
     onSaveClicked: () -> Unit
 ) {
+    val acti = LocalContext.current
     val context = LocalContext.current
-    var editable by rememberSaveable { mutableStateOf(false) }
+    var visible by rememberSaveable { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .size(128.dp)
@@ -44,7 +51,7 @@ fun ImageLayout(
             .padding(start = 8.dp, top = 4.dp, bottom = 4.dp, end = 4.dp)
             .background(Color.Transparent, shape = RoundedCornerShape(6.dp))
             .clickable {
-                editable = !editable
+                visible = !visible
             }
             .border(1.3.dp, Color.Blue, RoundedCornerShape(8.dp))
             .clip(RoundedCornerShape(8.dp))
@@ -64,7 +71,7 @@ fun ImageLayout(
             )
             Box(modifier = Modifier.align(Alignment.BottomCenter)) {
                 androidx.compose.animation.AnimatedVisibility(
-                    visible = editable,
+                    visible = visible,
                     enter = slideInVertically(initialOffsetY = { it }),
                     exit = slideOutVertically(targetOffsetY = { it }),
                     content = {
@@ -98,6 +105,7 @@ fun ImageLayout(
                                                     Toast.LENGTH_SHORT
                                                 )
                                                 .show()
+                                            visible = !visible
                                         },
                                     alpha = 1f,
                                 )
@@ -109,6 +117,8 @@ fun ImageLayout(
             }
         }
     }
+
+
 
 }
 

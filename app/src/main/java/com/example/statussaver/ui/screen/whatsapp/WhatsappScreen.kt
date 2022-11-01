@@ -1,5 +1,6 @@
 package com.example.statussaver.ui.screen.whatsapp
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -24,6 +25,9 @@ fun Whatsapp(
     val videoStatus = mainViewModel.whatsappVideoStatus.observeAsState()
     mainViewModel.getWhatsappStatusImage()
     mainViewModel.getWhatsappStatusVideo()
+
+    Log.d("Whatsapp","$imageStatus")
+    Log.d("Whatsapp","$videoStatus")
 
     val isRefreshing = mainViewModel.isRefreshing
     val pagerState = rememberPagerState()

@@ -56,6 +56,7 @@ fun LocalTabLayout(
         state = pagerState,
     ) { page ->
         when (page) {
+            //image
             0 -> {
                 Box(modifier = Modifier.fillMaxSize()) {
                     SwipeRefresh(
@@ -89,29 +90,32 @@ fun LocalTabLayout(
                     }
                 }
             }
+            //video
             1 -> {
-                SwipeRefresh(
-                    state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
-                    onRefresh = {
-                        mainViewModel.refresh()
-                        mainViewModel.getWABusinessStatusVideo()
-                    },
-                ) {
-                    LazyVerticalGrid(
-                        columns = GridCells.Adaptive(minSize = 128.dp)
+                Box(modifier = Modifier.fillMaxSize()) {
+                    SwipeRefresh(
+                        state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
+                        onRefresh = {
+                            mainViewModel.refresh()
+                            mainViewModel.getWABusinessStatusVideo()
+                        },
                     ) {
-                        videoStatus.value?.let { list ->
-                            items(
-                                items = list,
-                                key = {
-                                    it.path
-                                },
-                                contentType = {
-                                    it.path
-                                }
-                            ) {
-                                VideoLayout(status = it) {
-                                    Common.copyFile(status = it, context = context)
+                        LazyVerticalGrid(
+                            columns = GridCells.Adaptive(minSize = 128.dp)
+                        ) {
+                            videoStatus.value?.let { list ->
+                                items(
+                                    items = list,
+                                    key = {
+                                        it.path
+                                    },
+                                    contentType = {
+                                        it.path
+                                    }
+                                ) {
+                                    VideoLayout(status = it) {
+                                        Common.copyFile(status = it, context = context)
+                                    }
                                 }
                             }
                         }

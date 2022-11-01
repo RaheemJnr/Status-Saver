@@ -38,7 +38,7 @@ fun VideoLayout(
     onSaveClicked: () -> Unit
 ) {
     val context = LocalContext.current
-    var editable by rememberSaveable { mutableStateOf(false) }
+    var visible by rememberSaveable { mutableStateOf(false) }
 
     val imageLoader = ImageLoader.Builder(context)
         .components {
@@ -58,7 +58,7 @@ fun VideoLayout(
             .padding(start = 8.dp, top = 4.dp, bottom = 4.dp, end = 4.dp)
             .background(Color.Transparent, shape = RoundedCornerShape(6.dp))
             .clickable {
-                editable = !editable
+                visible = !visible
             }
             .border(1.3.dp, Color.Blue, RoundedCornerShape(8.dp))
             .clip(RoundedCornerShape(8.dp))
@@ -77,7 +77,7 @@ fun VideoLayout(
             )
             Box(modifier = Modifier.align(Alignment.BottomCenter)) {
                 androidx.compose.animation.AnimatedVisibility(
-                    visible = editable,
+                    visible = visible,
                     enter = slideInVertically(initialOffsetY = { it }),
                     exit = slideOutVertically(targetOffsetY = { it }),
                     content = {
@@ -115,6 +115,7 @@ fun VideoLayout(
                                                     Toast.LENGTH_SHORT
                                                 )
                                                 .show()
+                                            visible = !visible
                                         },
                                     alpha = 1f,
                                 )

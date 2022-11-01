@@ -42,10 +42,28 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     MainScreen(mainViewModel = mainViewModel)
+                    //  getPermission()
                 }
             }
         }
     }
+
+/*
+@RequiresApi(Build.VERSION_CODES.Q)
+fun getPermission() {
+val storageManager = application.getSystemService(Context.STORAGE_SERVICE) as StorageManager
+val intent = storageManager.primaryStorageVolume.createOpenDocumentTreeIntent()
+val targetDirectory = "Android%2Fmedia%2Fcom.whatsapp%2FWhatsApp%2FMedia%2F.Statuses"
+var uri = intent.getParcelableExtra<Uri>("android.provider.extra.INITIAL_URI") as Uri
+var scheme = uri.toString()
+scheme = scheme.replace("/root/", "/tree/")
+scheme += "%3A$targetDirectory"
+uri = Uri.parse(scheme)
+intent.putExtra("android.provider.extra.INITIAL_URI", uri)
+intent.putExtra("android.content.extra.SHOW_ADVANCE", true)
+startActivityForResult(intent, 1237)
+}
+*/
 
 
     @Deprecated("Deprecated in Java")
@@ -102,7 +120,98 @@ class MainActivity : ComponentActivity() {
                 File.separator + "StatusSaver"
     }
 
+
+/*
+override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+var treedata = ""
+super.onActivityResult(requestCode, resultCode, data)
+if (requestCode == 1237 && resultCode == RESULT_OK) {
+val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or
+Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+
+val treeUri = data?.data
+treedata = treeUri.toString()
+Log.d("whatsapp", "$treeUri::: $treedata  ")
+
+if (treeUri != null) {
+contentResolver.takePersistableUriPermission(
+treeUri,
+takeFlags
+)
+val fileDoc = DocumentFile.fromTreeUri(applicationContext, treeUri)
+if (fileDoc != null) {
+Log.d("whatsapp", "${fileDoc.listFiles()} ")
 }
+if (fileDoc != null) {
+for (file in fileDoc.listFiles()){
+Log.d("statusssss","$file")
+}
+
+
+}
+}
+
+
+}
+/ *
+
+val treeUri = data?.data?.also { uri ->
+
+contentResolver.takePersistableUriPermission(
+uri,
+takeFlags
+)
+
+val contentResolver = applicationContext.contentResolver
+
+fun dumpImageMetaData(uri: Uri) {
+
+// The query, because it only applies to a single document, returns only
+// one row. There's no need to filter, sort, or select fields,
+// because we want all fields for one document.
+val cursor: Cursor? = contentResolver.query(
+uri, null, null, null, null, null
+)
+
+cursor?.use {
+// moveToFirst() returns false if the cursor has 0 rows. Very handy for
+// "if there's anything to look at, look at it" conditionals.
+if (it.moveToFirst()) {
+
+// Note it's called "Display Name". This is
+// provider-specific, and might not necessarily be the file name.
+val displayName: String =
+it.getString(it.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+// Log.i(TAG, "Display Name: $displayName")
+
+val sizeIndex: Int = it.getColumnIndex(OpenableColumns.SIZE)
+// If the size is unknown, the value stored is null. But because an
+// int can't be null, the behavior is implementation-specific,
+// and unpredictable. So as
+// a rule, check if it's null before assigning to an int. This will
+// happen often: The storage API allows for remote files, whose
+// size might not be locally known.
+val size: String = if (!it.isNull(sizeIndex)) {
+// Technically the column stores an int, but cursor.getString()
+// will do the conversion automatically.
+it.getString(sizeIndex)
+
+
+} else {
+"Unknown"
+}
+Log.d("whatsapp", "$displayName$size")
+// Log.i(TAG, "Size: $size")
+}
+}
+}
+}
+* /
+}
+*/
+}
+
+
 
 
 

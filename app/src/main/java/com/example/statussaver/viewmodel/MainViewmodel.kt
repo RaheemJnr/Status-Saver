@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.statussaver.model.Status
+import com.example.statussaver.utilz.Common
 import com.example.statussaver.utilz.Constants.BUSINESS_STATUS_DIRECTORY
 import com.example.statussaver.utilz.Constants.BUSINESS_STATUS_DIRECTORY_NEW
 import com.example.statussaver.utilz.Constants.WHATSAPP_STATUS_DIRECTORY
@@ -45,10 +46,13 @@ class MainViewModel() : ViewModel() {
     //
     private val _whatsappImageStatus = MutableLiveData<List<Status>>()
     val whatsappImageStatus: LiveData<List<Status>> get() = _whatsappImageStatus
-//
+
+    //
     private val _whatsappVideoStatus = MutableLiveData<List<Status>>()
     val whatsappVideoStatus: LiveData<List<Status>> get() = _whatsappVideoStatus
 
+    private val _savedStatus = MutableLiveData<List<Status>>()
+    val savedStatus: LiveData<List<Status>> get() = _savedStatus
 
     //
     fun getWABusinessStatusImage() {
@@ -58,6 +62,7 @@ class MainViewModel() : ViewModel() {
             executeForBusinessImage(BUSINESS_STATUS_DIRECTORY_NEW)
         }
     }
+
     fun getWABusinessStatusVideo() {
         if (BUSINESS_STATUS_DIRECTORY.exists()) {
             executeForBusinessVideo(BUSINESS_STATUS_DIRECTORY)
@@ -76,6 +81,7 @@ class MainViewModel() : ViewModel() {
             executeForWhatsappImage(WHATSAPP_STATUS_DIRECTORY_NEW)
         }
     }
+
     fun getWhatsappStatusVideo() {
         if (WHATSAPP_STATUS_DIRECTORY.exists()) {
             Log.d("WhatsApp", "video Folder exist")
@@ -105,6 +111,7 @@ class MainViewModel() : ViewModel() {
         }
 
     }
+
     private fun executeForBusinessVideo(waFolder: File) {
         val businessVideoStatus = arrayListOf<Status>()
         viewModelScope.launch {
@@ -142,8 +149,8 @@ class MainViewModel() : ViewModel() {
                 }
             }
         }
-
     }
+
     private fun executeForWhatsappVideo(waFolder: File) {
         val whatsappVideoStatus = arrayListOf<Status>()
         viewModelScope.launch {
@@ -163,4 +170,25 @@ class MainViewModel() : ViewModel() {
         }
     }
 
+    //
+    fun getSavedFiles() {
+        val savedFilesList = arrayListOf<Status>()
+        val app_dir = Common.APP_DIR?.let { File(it) }
+        if (app_dir != null) {
+            if (app_dir.exists()) {
+                viewModelScope.launch {
+                    val savedFiles: Array<File>? = app_dir.listFiles()
+                    savedFilesList.clear()
+                    if (savedFiles != null && savedFiles.isNotEmpty()) {
+                        Arrays.sort(savedFiles)
+                        for (file in savedFiles) {
+                            val status = Status(file, file.name, file.absolutePath)
+                            savedFilesList.add(status)
+                            _savedStatus.postValue(savedFilesList)
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

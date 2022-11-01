@@ -36,7 +36,7 @@ fun MainScreenNavigation(
             Whatsapp(mainViewModel = mainViewModel)
         }
         composable(MainScreen.SavedFile.route) {
-            SavedFileScreen()
+            SavedFileScreen(mainViewModel)
         }
     }
 
