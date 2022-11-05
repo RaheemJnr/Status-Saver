@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.statussaver.viewmodel.MainViewModel
@@ -22,12 +21,10 @@ fun WABusiness(
     //context
     val imageStatus = mainViewModel.waBusinessImageStatus.observeAsState()
     val videoStatus = mainViewModel.waBusinessVideoStatus.observeAsState()
-    val errorMessage = mainViewModel.errorMessage.observeAsState()
+    val errorMessage = mainViewModel.errorMessageBusiness.observeAsState()
     val isRefreshing = mainViewModel.isRefreshing
     mainViewModel.getWABusinessStatusImage()
     mainViewModel.getWABusinessStatusVideo()
-    //
-    val context = LocalContext.current
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
     //

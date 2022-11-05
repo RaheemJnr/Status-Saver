@@ -56,6 +56,9 @@ class MainViewModel() : ViewModel() {
     val savedStatus: LiveData<List<Status>> get() = _savedStatus
 
     //observe ui error
+    private val _errorMessageBusiness = MutableLiveData<String>()
+    val errorMessageBusiness: LiveData<String> get() = _errorMessageBusiness
+    //
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> get() = _errorMessage
 
@@ -69,7 +72,7 @@ class MainViewModel() : ViewModel() {
                 executeForBusinessImage(BUSINESS_STATUS_DIRECTORY_NEW)
             }
             else -> {
-                _errorMessage.postValue("Can't find Whatsapp Business Directory")
+                _errorMessageBusiness.postValue("Can't find Whatsapp Business Directory")
             }
         }
     }
@@ -83,7 +86,7 @@ class MainViewModel() : ViewModel() {
                 executeForBusinessVideo(BUSINESS_STATUS_DIRECTORY_NEW)
             }
             else -> {
-                _errorMessage.postValue("Can't find Whatsapp Business Directory")
+                _errorMessageBusiness.postValue("Can't find Whatsapp Business Directory")
             }
         }
     }
@@ -135,9 +138,9 @@ class MainViewModel() : ViewModel() {
                         _waBusinessImageStatus.postValue(businessImageStatus)
                     }
                 }
-                if (businessImageStatus.size <= 0) _errorMessage.postValue("No File Found")
+                if (businessImageStatus.size <= 0) _errorMessageBusiness.postValue("No File Found")
             } else {
-                _errorMessage.postValue("No File found")
+                _errorMessageBusiness.postValue("No File found")
             }
         }
 
@@ -157,9 +160,9 @@ class MainViewModel() : ViewModel() {
                         _waBusinessVideoStatus.postValue(businessVideoStatus)
                     }
                 }
-                if (businessVideoStatus.size <= 0) _errorMessage.postValue("No File Found")
+                if (businessVideoStatus.size <= 0) _errorMessageBusiness.postValue("No File Found")
             } else {
-                _errorMessage.postValue("No File found")
+                _errorMessageBusiness.postValue("No File found")
             }
         }
     }
