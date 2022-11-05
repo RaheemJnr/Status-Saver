@@ -1,5 +1,8 @@
 package com.example.statussaver.ui.screen.savedFiles
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -9,7 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.statussaver.model.Status
 import com.example.statussaver.ui.components.ImageLayout
 import com.example.statussaver.ui.components.VideoLayout
 import com.example.statussaver.viewmodel.MainViewModel
@@ -23,6 +28,7 @@ fun SavedFileScreen(
     val savedStatus = mainViewModel.savedStatus.observeAsState()
     mainViewModel.getSavedFiles()
     val isRefreshing = mainViewModel.isRefreshing
+    val context = LocalContext.current
 
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -50,12 +56,11 @@ fun SavedFileScreen(
                     ) {
                         if (!it.isVideo && it.title.endsWith(".jpg")) {
                             ImageLayout(status = it) {
-                                //  Common.copyFile(status = it, context = context)
+                                shareFileIntentForImage(status = it, context = context)
                             }
                         } else {
                             VideoLayout(status = it) {
-                                //onclick
-
+                                shareFileIntentForVideo(status = it, context = context)
                             }
                         }
                     }
@@ -64,4 +69,25 @@ fun SavedFileScreen(
         }
     }
 
+}
+
+private fun shareFileIntentForImage(status: Status, context: Context) {
+    val shareIntent = Intent(Intent.ACTION_SEND)
+    shareIntent.type = "image/jpg"
+    shareIntent.putExtra(
+        Intent.EXTRA_STREAM,
+        Uri.parse("file://" + status.file.absolutePath)
+    )
+    context.startActivity(Intent.createChooser(shareIntent, "Share Status Saver Image"))
+}
+
+
+private fun shareFileIntentForVideo(status: Status, context: Context) {
+    val shareIntent = Intent(Intent.ACTION_SEND)
+    shareIntent.type = "image/mp4"
+    shareIntent.putExtra(
+        Intent.EXTRA_STREAM,
+        Uri.parse("file://" + status.file.absolutePath)
+    )
+    context.startActivity(Intent.createChooser(shareIntent, "Share Status Saver Video"))
 }

@@ -51,6 +51,7 @@ fun VideoLayout(
         imageLoader = imageLoader,
         contentScale = ContentScale.Crop
     )
+
     Column(
         modifier = Modifier
             .size(128.dp)
