@@ -95,7 +95,7 @@ fun PagerBusiness(
                                         }
                                     ) {
                                         ImageLayout(status = it) {
-                                            Common.copyFile(status = it, context = context)
+                                            Common.saveFile(status = it, context = context)
                                         }
                                     }
                                 }
@@ -137,7 +137,7 @@ fun PagerBusiness(
                                         }
                                     ) {
                                         VideoLayout(status = it) {
-                                            Common.copyFile(status = it, context = context)
+                                            Common.saveFile(status = it, context = context)
                                         }
                                     }
                                 }

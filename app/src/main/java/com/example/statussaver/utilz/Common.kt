@@ -11,7 +11,7 @@ import java.util.*
 
 object Common {
     var APP_DIR: String? = null
-    fun copyFile(status: Status, context: Context) {
+    fun saveFile(status: Status, context: Context) {
         val file = APP_DIR?.let { File(it) }
         if (file != null) {
             if (!file.exists()) {
@@ -37,7 +37,7 @@ object Common {
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            Log.e("satusSaver", e.toString())
+            Log.e("statusSaver", e.toString())
         }
     }
 

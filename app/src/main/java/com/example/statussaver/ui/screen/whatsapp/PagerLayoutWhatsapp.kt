@@ -94,7 +94,7 @@ fun PagerWhatsapp(
                                         }
                                     ) {
                                         ImageLayout(status = it) {
-                                            Common.copyFile(status = it, context = context)
+                                            Common.saveFile(status = it, context = context)
                                         }
                                     }
                                 }
@@ -136,7 +136,7 @@ fun PagerWhatsapp(
                                         }
                                     ) {
                                         VideoLayout(status = it) {
-                                            Common.copyFile(status = it, context = context)
+                                            Common.saveFile(status = it, context = context)
                                         }
                                     }
                                 }
