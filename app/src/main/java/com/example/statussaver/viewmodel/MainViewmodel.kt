@@ -51,44 +51,72 @@ class MainViewModel() : ViewModel() {
     private val _whatsappVideoStatus = MutableLiveData<List<Status>>()
     val whatsappVideoStatus: LiveData<List<Status>> get() = _whatsappVideoStatus
 
+    //saved status and display them in saved
     private val _savedStatus = MutableLiveData<List<Status>>()
     val savedStatus: LiveData<List<Status>> get() = _savedStatus
 
+    //observe ui error
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String> get() = _errorMessage
+
     //
     fun getWABusinessStatusImage() {
-        if (BUSINESS_STATUS_DIRECTORY.exists()) {
-            executeForBusinessImage(BUSINESS_STATUS_DIRECTORY)
-        } else if (BUSINESS_STATUS_DIRECTORY_NEW.exists()) {
-            executeForBusinessImage(BUSINESS_STATUS_DIRECTORY_NEW)
+        when {
+            BUSINESS_STATUS_DIRECTORY.exists() -> {
+                executeForBusinessImage(BUSINESS_STATUS_DIRECTORY)
+            }
+            BUSINESS_STATUS_DIRECTORY_NEW.exists() -> {
+                executeForBusinessImage(BUSINESS_STATUS_DIRECTORY_NEW)
+            }
+            else -> {
+                _errorMessage.postValue("Can't find Whatsapp Business Directory")
+            }
         }
     }
 
     fun getWABusinessStatusVideo() {
-        if (BUSINESS_STATUS_DIRECTORY.exists()) {
-            executeForBusinessVideo(BUSINESS_STATUS_DIRECTORY)
-        } else if (BUSINESS_STATUS_DIRECTORY_NEW.exists()) {
-            executeForBusinessVideo(BUSINESS_STATUS_DIRECTORY_NEW)
+        when {
+            BUSINESS_STATUS_DIRECTORY.exists() -> {
+                executeForBusinessVideo(BUSINESS_STATUS_DIRECTORY)
+            }
+            BUSINESS_STATUS_DIRECTORY_NEW.exists() -> {
+                executeForBusinessVideo(BUSINESS_STATUS_DIRECTORY_NEW)
+            }
+            else -> {
+                _errorMessage.postValue("Can't find Whatsapp Business Directory")
+            }
         }
     }
 
     //
     fun getWhatsappStatusImage() {
-        if (WHATSAPP_STATUS_DIRECTORY.exists()) {
-            Log.d("WhatsApp", "Folder exist")
-            executeForWhatsappImage(WHATSAPP_STATUS_DIRECTORY)
-        } else if (WHATSAPP_STATUS_DIRECTORY_NEW.exists()) {
-            Log.d("WhatsApp", "new Folder exist")
-            executeForWhatsappImage(WHATSAPP_STATUS_DIRECTORY_NEW)
+        when {
+            WHATSAPP_STATUS_DIRECTORY.exists() -> {
+                executeForWhatsappImage(WHATSAPP_STATUS_DIRECTORY)
+            }
+            WHATSAPP_STATUS_DIRECTORY_NEW.exists() -> {
+                executeForWhatsappImage(WHATSAPP_STATUS_DIRECTORY_NEW)
+            }
+            else -> {
+                _errorMessage.postValue("Can't find Whatsapp Directory")
+            }
         }
+
     }
 
     fun getWhatsappStatusVideo() {
-        if (WHATSAPP_STATUS_DIRECTORY.exists()) {
-            Log.d("WhatsApp", "video Folder exist")
-            executeForWhatsappVideo(WHATSAPP_STATUS_DIRECTORY)
-        } else if (WHATSAPP_STATUS_DIRECTORY_NEW.exists()) {
-            Log.d("WhatsApp", "video new Folder exist")
-            executeForWhatsappVideo(WHATSAPP_STATUS_DIRECTORY_NEW)
+        when {
+            WHATSAPP_STATUS_DIRECTORY.exists() -> {
+                Log.d("WhatsApp", "video Folder exist")
+                executeForWhatsappVideo(WHATSAPP_STATUS_DIRECTORY)
+            }
+            WHATSAPP_STATUS_DIRECTORY_NEW.exists() -> {
+                Log.d("WhatsApp", "video new Folder exist")
+                executeForWhatsappVideo(WHATSAPP_STATUS_DIRECTORY_NEW)
+            }
+            else -> {
+                _errorMessage.postValue("Can't find Whatsapp Directory")
+            }
         }
     }
 
@@ -107,6 +135,9 @@ class MainViewModel() : ViewModel() {
                         _waBusinessImageStatus.postValue(businessImageStatus)
                     }
                 }
+                if (businessImageStatus.size <= 0) _errorMessage.postValue("No File Found")
+            } else {
+                _errorMessage.postValue("No File found")
             }
         }
 
@@ -126,6 +157,9 @@ class MainViewModel() : ViewModel() {
                         _waBusinessVideoStatus.postValue(businessVideoStatus)
                     }
                 }
+                if (businessVideoStatus.size <= 0) _errorMessage.postValue("No File Found")
+            } else {
+                _errorMessage.postValue("No File found")
             }
         }
     }
@@ -147,6 +181,9 @@ class MainViewModel() : ViewModel() {
                         _whatsappImageStatus.postValue(whatsappImageStatusList)
                     }
                 }
+                if (whatsappImageStatusList.size <= 0) _errorMessage.postValue("No File Found")
+            } else {
+                _errorMessage.postValue("No File found")
             }
         }
     }
@@ -166,6 +203,9 @@ class MainViewModel() : ViewModel() {
                         _whatsappVideoStatus.postValue(whatsappVideoStatus)
                     }
                 }
+                if (whatsappVideoStatus.size <= 0) _errorMessage.postValue("No File Found")
+            } else {
+                _errorMessage.postValue("No File found")
             }
         }
     }
@@ -173,11 +213,11 @@ class MainViewModel() : ViewModel() {
     //
     fun getSavedFiles() {
         val savedFilesList = arrayListOf<Status>()
-        val app_dir = Common.APP_DIR?.let { File(it) }
-        if (app_dir != null) {
-            if (app_dir.exists()) {
+        val appDir = Common.APP_DIR?.let { File(it) }
+        if (appDir != null) {
+            if (appDir.exists()) {
                 viewModelScope.launch {
-                    val savedFiles: Array<File>? = app_dir.listFiles()
+                    val savedFiles: Array<File>? = appDir.listFiles()
                     savedFilesList.clear()
                     if (savedFiles != null && savedFiles.isNotEmpty()) {
                         Arrays.sort(savedFiles)
@@ -186,9 +226,10 @@ class MainViewModel() : ViewModel() {
                             savedFilesList.add(status)
                             _savedStatus.postValue(savedFilesList)
                         }
-                    }
+                    } else _errorMessage.postValue("No File Found")
                 }
             }
+            else _errorMessage.postValue("Folder Not Found")
         }
     }
 }
