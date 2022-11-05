@@ -49,16 +49,18 @@
                 android:value="" />
         </activity>
 
+<!--        tools:replace="android:authorities"-->
+<!--        tools:replace="android:resource"-->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.statussaver.provider"
             android:exported="false"
             android:grantUriPermissions="true"
-            tools:replace="android:authorities">
+            >
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/path_for_provider"
-                tools:replace="android:resource" />
+                android:resource="@xml/provider_paths"
+                />
         </provider>
     </application>
 

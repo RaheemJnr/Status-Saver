@@ -3,6 +3,7 @@ package com.example.statussaver.ui.screen.savedFiles
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Environment
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -14,12 +15,16 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider
+import com.example.statussaver.R
 import com.example.statussaver.model.Status
 import com.example.statussaver.ui.components.ImageLayout
 import com.example.statussaver.ui.components.VideoLayout
 import com.example.statussaver.viewmodel.MainViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import java.io.File
+
 
 @Composable
 fun SavedFileScreen(
@@ -40,7 +45,6 @@ fun SavedFileScreen(
                 mainViewModel.getWhatsappStatusImage()
             },
         ) {
-
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(minSize = 128.dp)
             ) {
@@ -55,11 +59,11 @@ fun SavedFileScreen(
                         }
                     ) {
                         if (!it.isVideo && it.title.endsWith(".jpg")) {
-                            ImageLayout(status = it) {
+                            ImageLayout(status = it, touchImageResource = R.drawable.share) {
                                 shareFileIntentForImage(status = it, context = context)
                             }
                         } else {
-                            VideoLayout(status = it) {
+                            VideoLayout(status = it, touchImageResource = R.drawable.share) {
                                 shareFileIntentForVideo(status = it, context = context)
                             }
                         }
@@ -68,15 +72,26 @@ fun SavedFileScreen(
             }
         }
     }
-
 }
 
 private fun shareFileIntentForImage(status: Status, context: Context) {
+    val path = File(
+        Environment.getExternalStorageDirectory().path +
+                File.separator, "StatusSaver"
+    )
+    val newfile = File(path, status.file.absolutePath)
+
+
+    val imageUri = FileProvider.getUriForFile(
+        context,
+        "com.example.statussaver.provider",
+        newfile
+    )
     val shareIntent = Intent(Intent.ACTION_SEND)
     shareIntent.type = "image/jpg"
     shareIntent.putExtra(
         Intent.EXTRA_STREAM,
-        Uri.parse("file://" + status.file.absolutePath)
+        imageUri
     )
     context.startActivity(Intent.createChooser(shareIntent, "Share Status Saver Image"))
 }

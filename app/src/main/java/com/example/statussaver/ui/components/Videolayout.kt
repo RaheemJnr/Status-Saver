@@ -35,6 +35,7 @@ import com.example.statussaver.utilz.Common
 @Composable
 fun VideoLayout(
     status: Status,
+    touchImageResource: Int,
     onSaveClicked: () -> Unit
 ) {
     val context = LocalContext.current
@@ -108,7 +109,7 @@ fun VideoLayout(
                                     .background(Color.Black)
                             ) {
                                 Image(
-                                    painter = painterResource(id = R.drawable.download_icon),
+                                    painter = painterResource(id = touchImageResource),
                                     contentDescription = "",
                                     colorFilter = ColorFilter.tint(Color.White),
                                     modifier = Modifier

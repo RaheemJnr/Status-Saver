@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.statussaver.R
 import com.example.statussaver.model.Status
 import com.example.statussaver.ui.components.ImageLayout
 import com.example.statussaver.ui.components.VideoLayout
@@ -94,7 +95,10 @@ fun PagerBusiness(
                                             it.path
                                         }
                                     ) {
-                                        ImageLayout(status = it) {
+                                        ImageLayout(
+                                            status = it,
+                                            touchImageResource = R.drawable.download_icon
+                                        ) {
                                             Common.saveFile(status = it, context = context)
                                         }
                                     }
@@ -136,7 +140,10 @@ fun PagerBusiness(
                                             it.path
                                         }
                                     ) {
-                                        VideoLayout(status = it) {
+                                        VideoLayout(
+                                            status = it,
+                                            touchImageResource = R.drawable.download_icon
+                                        ) {
                                             Common.saveFile(status = it, context = context)
                                         }
                                     }

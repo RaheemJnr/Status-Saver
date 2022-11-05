@@ -1,11 +1,6 @@
 package com.example.statussaver.ui.components
 
-import android.content.Context
-import android.net.Uri
-import android.os.Build
-import android.os.storage.StorageManager
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
@@ -30,18 +25,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.core.app.ActivityCompat
 import coil.compose.rememberAsyncImagePainter
-import com.example.statussaver.R
 import com.example.statussaver.model.Status
 import com.example.statussaver.utilz.Common
 
 @Composable
 fun ImageLayout(
     status: Status,
+    touchImageResource: Int,
     onSaveClicked: () -> Unit
 ) {
-    val acti = LocalContext.current
     val context = LocalContext.current
     var visible by rememberSaveable { mutableStateOf(false) }
     Column(
@@ -90,7 +83,7 @@ fun ImageLayout(
                                     .background(Color.Black)
                             ) {
                                 Image(
-                                    painter = painterResource(id = R.drawable.download_icon),
+                                    painter = painterResource(id = touchImageResource),
                                     contentDescription = "",
                                     colorFilter = ColorFilter.tint(Color.White),
                                     modifier = Modifier
@@ -117,7 +110,6 @@ fun ImageLayout(
             }
         }
     }
-
 
 
 }
