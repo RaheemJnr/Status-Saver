@@ -75,6 +75,15 @@ fun VideoLayout(
                 alignment = Alignment.Center,
                 modifier = Modifier.fillMaxSize()
             )
+
+            Image(
+                painter = painterResource(id = R.drawable.play_button),
+                contentDescription = "play button",
+                modifier = Modifier
+                    .size(35.dp)
+                    .fillMaxSize()
+                    .align(Alignment.Center)
+            )
             Box(modifier = Modifier.align(Alignment.BottomCenter)) {
                 androidx.compose.animation.AnimatedVisibility(
                     visible = visible,
