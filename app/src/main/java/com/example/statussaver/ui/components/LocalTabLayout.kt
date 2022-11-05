@@ -41,6 +41,7 @@ fun LocalTabLayout(
     mainViewModel: MainViewModel,
     pagerState: PagerState,
     scope: CoroutineScope,
+    errorMessage: State<String?>,
     isRefreshing: StateFlow<Boolean>,
     imageStatus: State<List<Status>?>,
     videoStatus: State<List<Status>?>

@@ -23,19 +23,21 @@ fun Whatsapp(
     //context
     val imageStatus = mainViewModel.whatsappImageStatus.observeAsState()
     val videoStatus = mainViewModel.whatsappVideoStatus.observeAsState()
+    val errorMessage = mainViewModel.errorMessage.observeAsState()
     mainViewModel.getWhatsappStatusImage()
     mainViewModel.getWhatsappStatusVideo()
 
-    Log.d("Whatsapp","$imageStatus")
-    Log.d("Whatsapp","$videoStatus")
+    Log.d("Whatsapp", "$imageStatus")
+    Log.d("Whatsapp", "$videoStatus")
 
     val isRefreshing = mainViewModel.isRefreshing
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
     //root composable
     Column(
-        Modifier.fillMaxSize()
-            .padding( bottom = 62.dp)
+        Modifier
+            .fillMaxSize()
+            .padding(bottom = 62.dp)
     ) {
         Scaffold(
             topBar = { }
@@ -50,6 +52,7 @@ fun Whatsapp(
                     mainViewModel = mainViewModel,
                     pagerState = pagerState,
                     isRefreshing = isRefreshing,
+                    errorMessage = errorMessage,
                     scope = scope,
                     imageStatus = imageStatus,
                     videoStatus = videoStatus
