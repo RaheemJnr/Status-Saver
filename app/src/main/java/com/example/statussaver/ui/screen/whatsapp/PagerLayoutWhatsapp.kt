@@ -1,4 +1,4 @@
-package com.example.statussaver.ui.components
+package com.example.statussaver.ui.screen.whatsapp
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,12 +16,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.statussaver.model.Status
+import com.example.statussaver.ui.components.ImageLayout
+import com.example.statussaver.ui.components.VideoLayout
 import com.example.statussaver.utilz.Common
 import com.example.statussaver.utilz.TabItems
 import com.example.statussaver.viewmodel.MainViewModel
@@ -37,7 +40,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun LocalTabLayout(
+fun PagerWhatsapp(
     mainViewModel: MainViewModel,
     pagerState: PagerState,
     scope: CoroutineScope,
@@ -59,69 +62,89 @@ fun LocalTabLayout(
         when (page) {
             //image
             0 -> {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    SwipeRefresh(
-                        state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
-                        onRefresh = {
-                            mainViewModel.refresh()
-                            mainViewModel.getWABusinessStatusImage()
-                            mainViewModel.getWhatsappStatusImage()
-                        },
+                if (errorMessage.value?.isNotEmpty() == true) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
                     ) {
-
-                        LazyVerticalGrid(
-                            columns = GridCells.Adaptive(minSize = 128.dp)
+                        Text(text = "${errorMessage.value}")
+                    }
+                } else {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        SwipeRefresh(
+                            state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
+                            onRefresh = {
+                                mainViewModel.refresh()
+                                mainViewModel.getWABusinessStatusImage()
+                                mainViewModel.getWhatsappStatusImage()
+                            },
                         ) {
-                            imageStatus.value?.let { list ->
-                                items(
-                                    items = list,
-                                    key = {
-                                        it.path
-                                    },
-                                    contentType = {
-                                        it.path
-                                    }
-                                ) {
-                                    ImageLayout(status = it) {
-                                        Common.copyFile(status = it, context = context)
+
+                            LazyVerticalGrid(
+                                columns = GridCells.Adaptive(minSize = 128.dp)
+                            ) {
+                                imageStatus.value?.let { list ->
+                                    items(
+                                        items = list,
+                                        key = {
+                                            it.path
+                                        },
+                                        contentType = {
+                                            it.path
+                                        }
+                                    ) {
+                                        ImageLayout(status = it) {
+                                            Common.copyFile(status = it, context = context)
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
+
             }
             //video
             1 -> {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    SwipeRefresh(
-                        state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
-                        onRefresh = {
-                            mainViewModel.refresh()
-                            mainViewModel.getWABusinessStatusVideo()
-                        },
+                if (errorMessage.value?.isNotEmpty() == true) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
                     ) {
-                        LazyVerticalGrid(
-                            columns = GridCells.Adaptive(minSize = 128.dp)
+                        Text(text = "${errorMessage.value}")
+                    }
+                } else {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        SwipeRefresh(
+                            state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
+                            onRefresh = {
+                                mainViewModel.refresh()
+                                mainViewModel.getWABusinessStatusVideo()
+                            },
                         ) {
-                            videoStatus.value?.let { list ->
-                                items(
-                                    items = list,
-                                    key = {
-                                        it.path
-                                    },
-                                    contentType = {
-                                        it.path
-                                    }
-                                ) {
-                                    VideoLayout(status = it) {
-                                        Common.copyFile(status = it, context = context)
+                            LazyVerticalGrid(
+                                columns = GridCells.Adaptive(minSize = 128.dp)
+                            ) {
+                                videoStatus.value?.let { list ->
+                                    items(
+                                        items = list,
+                                        key = {
+                                            it.path
+                                        },
+                                        contentType = {
+                                            it.path
+                                        }
+                                    ) {
+                                        VideoLayout(status = it) {
+                                            Common.copyFile(status = it, context = context)
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
+
             }
         }
     }
