@@ -96,8 +96,6 @@ fun VideoLayout(
                                     .height(35.dp)
                                     // .alpha(0.4f)
                                     .background(Color.Black)
-
-
                             ) {
                                 Image(
                                     painter = painterResource(id = R.drawable.download_icon),

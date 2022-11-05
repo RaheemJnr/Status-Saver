@@ -1,4 +1,4 @@
-package com.example.statussaver.ui.screen.saved_files
+package com.example.statussaver.ui.screen.savedFiles
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +11,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.statussaver.ui.components.ImageLayout
+import com.example.statussaver.ui.components.VideoLayout
 import com.example.statussaver.viewmodel.MainViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -47,8 +48,15 @@ fun SavedFileScreen(
                             it.path
                         }
                     ) {
-                        ImageLayout(status = it) {
-//                            Common.copyFile(status = it, context = context)
+                        if (!it.isVideo && it.title.endsWith(".jpg")) {
+                            ImageLayout(status = it) {
+                                //  Common.copyFile(status = it, context = context)
+                            }
+                        } else {
+                            VideoLayout(status = it) {
+                                //onclick
+
+                            }
                         }
                     }
                 }

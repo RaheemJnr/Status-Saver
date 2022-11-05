@@ -9,7 +9,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.statussaver.ui.screen.saved_files.SavedFileScreen
+import com.example.statussaver.ui.screen.savedFiles.SavedFileScreen
 import com.example.statussaver.ui.screen.whatsapp.Whatsapp
 import com.example.statussaver.ui.screen.whatsapp_business.WABusiness
 import com.example.statussaver.viewmodel.MainViewModel
