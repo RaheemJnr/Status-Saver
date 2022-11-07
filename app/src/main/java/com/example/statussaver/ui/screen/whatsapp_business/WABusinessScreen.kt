@@ -2,12 +2,17 @@ package com.example.statussaver.ui.screen.whatsapp_business
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.statussaver.ui.components.TopAppBar
 import com.example.statussaver.viewmodel.MainViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
@@ -34,12 +39,20 @@ fun WABusiness(
             .padding(start = 1.dp, end = 1.dp, bottom = 62.dp)
     ) {
         Scaffold(
-            topBar = { }
+            topBar = {
+                TopAppBar(
+                    icon = Icons.Default.MoreVert,
+                    iconColorFilter = ColorFilter.tint(Color.Black),
+                    title = "Status Saver",
+                    titleColorFilter = Color.White
+                ) {
+
+                }
+            }
         ) { contentPadding ->
             Column(
                 modifier = Modifier.padding(contentPadding)
             ) {
-
                 Spacer(modifier = Modifier.height(4.dp))
                 //
                 PagerBusiness(
