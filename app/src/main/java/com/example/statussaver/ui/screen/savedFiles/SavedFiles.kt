@@ -4,8 +4,6 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
-import android.os.StrictMode
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -80,8 +78,7 @@ private fun shareFileIntentForImage(status: Status, context: Context) {
 
     val uri = FileProvider.getUriForFile(context, "com.example.statussaver.provider", status.file)
     val intent = Intent(Intent.ACTION_SEND)
-    intent.type = "image/jpg"
-    // .setDataAndType(uri, "image/jpg")
+    intent.type = "image/*"
     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     intent.putExtra(Intent.EXTRA_STREAM, uri)
 
@@ -90,71 +87,27 @@ private fun shareFileIntentForImage(status: Status, context: Context) {
     } catch (ex: ActivityNotFoundException) {
         Toast.makeText(
             context,
-            "Sorry, we cannot display that PDF!",
+            "Sorry, we cannot display this image!",
             Toast.LENGTH_LONG
         ).show()
     }
-
-//    val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or
-//            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-//    val filePath = File(
-//        Environment.getExternalStorageDirectory().path +
-//                File.separator, "StatusSaver"
-//    )
-//    val newFilePath = File(filePath, status.file.absolutePath)
-//
-//
-//    val imageUri = FileProvider.getUriForFile(
-//        context,
-//        "com.example.statussaver.provider",
-//        newFilePath
-//    )
-//    Log.d("tagggg", "$imageUri")
-//    val shareIntent = Intent(Intent.ACTION_SEND)
-//    //   shareIntent.type =  "image/*"
-//    shareIntent.setDataAndType(imageUri, "image/*")
-//    shareIntent.putExtra(
-//        Intent.EXTRA_STREAM,
-//        imageUri
-//    )
-//    shareIntent.addFlags(takeFlags)
-//    Log.d("file debug", "$imageUri")
-//    context.startActivity(Intent.createChooser(shareIntent, "Share"))
 }
 
 
 private fun shareFileIntentForVideo(status: Status, context: Context) {
-    val builder = StrictMode.VmPolicy.Builder()
-    StrictMode.setVmPolicy(builder.build())
-//    val filePath = File(
-//        Environment.getExternalStorageDirectory().path +
-//                File.separator, "StatusSaver"
-//    )
-//    val newFilePath = File(filePath, status.file.absolutePath)
-//
-//
-//    val videoUri = FileProvider.getUriForFile(
-//        context,
-//        "com.example.statussaver.provider",
-//        newFilePath
-//    )
-//    //
-//    val shareIntent = Intent(Intent.ACTION_SEND)
-//    shareIntent.type = "image/mp4"
-//    shareIntent.putExtra(
-//        Intent.EXTRA_STREAM,
-//        videoUri
-//    )
-//    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//    context.startActivity(Intent.createChooser(shareIntent, "Share Status Saver Video"))
+    val uri = FileProvider.getUriForFile(context, "com.example.statussaver.provider", status.file)
+    val intent = Intent(Intent.ACTION_SEND)
+    intent.type = "image/*"
+    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    intent.putExtra(Intent.EXTRA_STREAM, uri)
 
-    val shareIntent = Intent(Intent.ACTION_SEND)
-
-    if (status.isVideo) shareIntent.type = "image/mp4" else shareIntent.type = "image/jpg"
-
-    shareIntent.putExtra(
-        Intent.EXTRA_STREAM,
-        Uri.parse("file://" + status.file.absolutePath)
-    )
-    context.startActivity(Intent.createChooser(shareIntent, "Share image"))
+    try {
+        context.startActivity(Intent.createChooser(intent, ""))
+    } catch (ex: ActivityNotFoundException) {
+        Toast.makeText(
+            context,
+            "Sorry, we cannot display this image!",
+            Toast.LENGTH_LONG
+        ).show()
+    }
 }
