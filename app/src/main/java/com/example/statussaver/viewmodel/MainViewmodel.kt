@@ -37,6 +37,7 @@ class MainViewModel() : ViewModel() {
         }
     }
 
+
     private val _waBusinessImageStatus = MutableLiveData<List<Status>>()
     val waBusinessImageStatus: LiveData<List<Status>> get() = _waBusinessImageStatus
 
