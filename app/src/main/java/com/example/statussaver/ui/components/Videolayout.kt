@@ -31,6 +31,7 @@ import coil.decode.VideoFrameDecoder
 import com.example.statussaver.R
 import com.example.statussaver.model.Status
 import com.example.statussaver.utilz.Common
+import kotlinx.coroutines.Dispatchers
 
 @Composable
 fun VideoLayout(
@@ -38,6 +39,8 @@ fun VideoLayout(
     touchImageResource: Int,
     onSaveClicked: () -> Unit
 ) {
+//    val job = Job()
+//    val coroutine = Dispatchers.IO + job
     val context = LocalContext.current
     var visible by rememberSaveable { mutableStateOf(false) }
 
@@ -45,6 +48,7 @@ fun VideoLayout(
         .components {
             add(VideoFrameDecoder.Factory())
         }.crossfade(true)
+        .dispatcher(Dispatchers.Default)
         .build()
 
     val painter = rememberAsyncImagePainter(
