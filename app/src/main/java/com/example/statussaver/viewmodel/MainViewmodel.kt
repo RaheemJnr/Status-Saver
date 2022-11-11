@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.File
-import java.util.*
 
 
 class MainViewModel() : ViewModel() {
@@ -131,7 +130,7 @@ class MainViewModel() : ViewModel() {
             val statusFiles: Array<File>? = wAFolder.listFiles()
             businessImageStatus.clear()
             if (statusFiles != null && statusFiles.isNotEmpty()) {
-                Arrays.sort(statusFiles)
+                statusFiles.sortByDescending { it.lastModified() }
                 for (file in statusFiles) {
                     val status = Status(file = file, title = file.name, path = file.absolutePath)
                     if (!status.isVideo && status.title.endsWith(".jpg")) {
@@ -153,7 +152,7 @@ class MainViewModel() : ViewModel() {
             val statusFiles = waFolder.listFiles()
             businessVideoStatus.clear()
             if (statusFiles != null && statusFiles.isNotEmpty()) {
-                Arrays.sort(statusFiles)
+                statusFiles.sortByDescending { it.lastModified() }
                 for (file in statusFiles) {
                     val status = Status(file, file.name, file.absolutePath)
                     if (status.isVideo) {
@@ -176,7 +175,7 @@ class MainViewModel() : ViewModel() {
             val statusFiles: Array<File>? = wAFolder.listFiles()
             whatsappImageStatusList.clear()
             if (statusFiles != null && statusFiles.isNotEmpty()) {
-                Arrays.sort(statusFiles)
+                statusFiles.sortByDescending { it.lastModified() }
                 for (file in statusFiles) {
                     val status = Status(file = file, title = file.name, path = file.absolutePath)
                     if (!status.isVideo && status.title.endsWith(".jpg")) {
@@ -198,7 +197,7 @@ class MainViewModel() : ViewModel() {
             val statusFiles = waFolder.listFiles()
             whatsappVideoStatus.clear()
             if (statusFiles != null && statusFiles.isNotEmpty()) {
-                Arrays.sort(statusFiles)
+                statusFiles.sortByDescending { it.lastModified() }
                 for (file in statusFiles) {
                     val status = Status(file, file.name, file.absolutePath)
                     if (status.isVideo) {
@@ -224,7 +223,7 @@ class MainViewModel() : ViewModel() {
                     val savedFiles: Array<File>? = appDir.listFiles()
                     savedFilesList.clear()
                     if (savedFiles != null && savedFiles.isNotEmpty()) {
-                        Arrays.sort(savedFiles)
+                        savedFiles.sortByDescending { it.lastModified() }
                         for (file in savedFiles) {
                             val status = Status(file, file.name, file.absolutePath)
                             savedFilesList.add(status)
