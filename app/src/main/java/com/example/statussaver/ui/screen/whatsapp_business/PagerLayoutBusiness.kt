@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.Tab
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TabRow
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +24,7 @@ import com.example.statussaver.ui.components.ImageLayout
 import com.example.statussaver.ui.components.VideoLayout
 import com.example.statussaver.utilz.Common
 import com.example.statussaver.utilz.CustomTabIndicator
+import com.example.statussaver.utilz.TabItem
 import com.example.statussaver.utilz.TabItems
 import com.example.statussaver.viewmodel.MainViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -166,20 +167,52 @@ private fun TabRowComposable(
             CustomTabIndicator(currentTabPosition = tabPositions[pagerState.currentPage])
         },
         backgroundColor = Color.White,
-        divider = {
-        }
+        divider = {}
     ) {
         // Add tabs for all of our pages
         tabsTitles.forEachIndexed { index, title ->
-            Tab(
-                text = { Text(text = title.value) },
-                selected = pagerState.currentPage == index,
-                onClick = {
+//            Tab(
+//                text = { Text(text = title.value) },
+//                selected = pagerState.currentPage == index,
+//                onClick = {
+//                    scope.launch {
+//                        pagerState.animateScrollToPage(page = index)
+//                    }
+//                },
+//            )
+            TabItem(
+                title = title.value,
+                textColor = getDashboardTabTextColor(
+                    tabPage = pagerState,
+                    selectedTabPage = pagerState.currentPage
+
+                ), onClick = {
                     scope.launch {
-                        pagerState.animateScrollToPage(page = index)
+                        pagerState.animateScrollToPage(page =index)
                     }
-                },
+                }
             )
         }
+        TabItem(
+            title = "Video",
+            textColor = getDashboardTabTextColor(
+                tabPage = pagerState,
+                selectedTabPage = pagerState.currentPage
+            )
+        )
     }
 }
+
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+private fun getDashboardTabTextColor(
+    tabPage: PagerState,
+    selectedTabPage: Int,
+): Color =
+    if (tabPage.currentPage == selectedTabPage) {
+        MaterialTheme.colors.onPrimary
+    } else {
+        MaterialTheme.colors.onBackground
+            .copy(alpha = .5f)
+    }
