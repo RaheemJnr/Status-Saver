@@ -76,7 +76,7 @@ fun TabItem(
                 vertical = 16.dp
             ),
             text = title,
-            style = MaterialTheme.typography.subtitle2,
+            style = MaterialTheme.typography.subtitle1,
             fontWeight = FontWeight.Medium,
             color = textColor,
             maxLines = 1,

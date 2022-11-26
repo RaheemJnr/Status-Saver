@@ -171,15 +171,6 @@ private fun TabRowComposable(
     ) {
         // Add tabs for all of our pages
         tabsTitles.forEachIndexed { index, title ->
-//            Tab(
-//                text = { Text(text = title.value) },
-//                selected = pagerState.currentPage == index,
-//                onClick = {
-//                    scope.launch {
-//                        pagerState.animateScrollToPage(page = index)
-//                    }
-//                },
-//            )
             TabItem(
                 title = title.value,
                 textColor = getDashboardTabTextColor(
@@ -207,5 +198,5 @@ private fun getDashboardTabTextColor(
         MaterialTheme.colors.onPrimary
     } else {
         MaterialTheme.colors.onBackground
-            .copy(alpha = .5f)
+            .copy(alpha = .6f)
     }
