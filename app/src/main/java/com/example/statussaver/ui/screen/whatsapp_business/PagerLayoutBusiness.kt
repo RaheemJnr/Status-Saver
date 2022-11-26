@@ -184,22 +184,15 @@ private fun TabRowComposable(
                 title = title.value,
                 textColor = getDashboardTabTextColor(
                     tabPage = pagerState,
-                    selectedTabPage = pagerState.currentPage
+                    selectedTabPage = index
 
                 ), onClick = {
                     scope.launch {
-                        pagerState.animateScrollToPage(page =index)
+                        pagerState.animateScrollToPage(page = index)
                     }
                 }
             )
         }
-        TabItem(
-            title = "Video",
-            textColor = getDashboardTabTextColor(
-                tabPage = pagerState,
-                selectedTabPage = pagerState.currentPage
-            )
-        )
     }
 }
 
