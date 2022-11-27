@@ -129,6 +129,7 @@ fun PagerBusiness(
                             },
                         ) {
                             LazyVerticalGrid(
+                                modifier = Modifier.padding(horizontal = 2.dp),
                                 columns = GridCells.Adaptive(minSize = 128.dp)
                             ) {
                                 videoStatus.value?.let { list ->

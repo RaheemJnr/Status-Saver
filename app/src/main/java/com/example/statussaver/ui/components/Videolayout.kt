@@ -39,8 +39,6 @@ fun VideoLayout(
     touchImageResource: Int,
     onSaveClicked: () -> Unit
 ) {
-//    val job = Job()
-//    val coroutine = Dispatchers.IO + job
     val context = LocalContext.current
     var visible by rememberSaveable { mutableStateOf(false) }
 
@@ -61,7 +59,7 @@ fun VideoLayout(
         modifier = Modifier
             .size(128.dp)
             .fillMaxSize()
-            .padding(start = 8.dp, top = 4.dp, bottom = 4.dp, end = 4.dp)
+            .padding(start = 8.dp, top = 4.dp, bottom = 4.dp, end = 8.dp)
             .background(Color.Transparent, shape = RoundedCornerShape(6.dp))
             .clickable {
                 visible = !visible
