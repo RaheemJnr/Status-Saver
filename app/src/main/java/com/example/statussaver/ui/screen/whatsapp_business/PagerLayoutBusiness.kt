@@ -52,7 +52,12 @@ fun PagerBusiness(
     //
     val context = LocalContext.current
 
-    TabRowComposable(pagerState, tabsTitles, scope)
+    TabRowComposable(
+        pagerState,
+        tabsTitles,
+        scope,
+        modifier = Modifier.padding(horizontal = Dimens.MediumPadding.size),
+    )
     HorizontalPager(
         count = tabsTitles.size,
         state = pagerState,
@@ -158,10 +163,11 @@ fun PagerBusiness(
 private fun TabRowComposable(
     pagerState: PagerState,
     tabsTitles: List<TabItems>,
-    scope: CoroutineScope
+    scope: CoroutineScope,
+    modifier: Modifier = Modifier
 ) {
     TabRow(
-        modifier = Modifier.width(250.dp),
+        modifier = modifier.width(250.dp),
         selectedTabIndex = pagerState.currentPage,
         indicator = { tabPositions ->
             CustomTabIndicator(currentTabPosition = tabPositions[pagerState.currentPage])
