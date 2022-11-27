@@ -49,7 +49,7 @@ fun WABusiness(
             ) {
                 StatusPageHeading(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    title = "Status Saver",
+                    title = "Whatsapp Business",
                     extraItems = {
                         IconButton(
                             modifier = Modifier.background(

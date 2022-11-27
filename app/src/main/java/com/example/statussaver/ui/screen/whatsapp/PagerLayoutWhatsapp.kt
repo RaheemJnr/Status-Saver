@@ -2,6 +2,7 @@ package com.example.statussaver.ui.screen.whatsapp
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -23,6 +24,7 @@ import com.example.statussaver.model.Status
 import com.example.statussaver.ui.components.ImageLayout
 import com.example.statussaver.ui.components.VideoLayout
 import com.example.statussaver.ui.screen.whatsapp_business.getTabColor
+import com.example.statussaver.ui.theme.Dimens
 import com.example.statussaver.utilz.Common
 import com.example.statussaver.utilz.CustomTabIndicator
 import com.example.statussaver.utilz.TabItem
@@ -53,7 +55,10 @@ fun PagerWhatsapp(
     //
     val context = LocalContext.current
 
-    TabRowComposable(pagerState, tabsTitles, scope)
+    TabRowComposable(
+        pagerState, tabsTitles, scope,
+        modifier = Modifier.padding(horizontal = Dimens.MediumPadding.size)
+    )
     HorizontalPager(
         count = tabsTitles.size,
         state = pagerState,

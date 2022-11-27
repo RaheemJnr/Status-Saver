@@ -49,12 +49,13 @@ fun Whatsapp(
             }
         ) { contentPadding ->
             Column(
-                modifier = Modifier.padding(contentPadding)
+                modifier = Modifier
+                    .padding(contentPadding)
                     .statusBarsPadding()
             ) {
                 StatusPageHeading(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    title = "Status Saver",
+                    title = "Whatsapp",
                     extraItems = {
                         IconButton(
                             modifier = Modifier.background(
