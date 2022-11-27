@@ -41,7 +41,7 @@ fun ImageLayout(
         modifier = Modifier
             .size(128.dp)
             .wrapContentSize()
-            .padding(start = 8.dp, top = 4.dp, bottom = 4.dp, end = 4.dp)
+            .padding(start = 8.dp, top = 4.dp, bottom = 4.dp, end = 8.dp)
             .background(Color.Transparent, shape = RoundedCornerShape(6.dp))
             .clickable {
                 visible = !visible
