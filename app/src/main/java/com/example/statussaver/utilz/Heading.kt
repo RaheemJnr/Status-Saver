@@ -44,7 +44,7 @@ fun StatusPageHeading(
                 style = titleTextStyle,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                color = contentColor,
+                color = contentColor.copy(alpha = 0.8f),
                 textAlign = TextAlign.Start
             )
             extraItems()

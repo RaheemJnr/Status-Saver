@@ -53,7 +53,7 @@ fun WABusiness(
                     extraItems = {
                         IconButton(
                             modifier = Modifier.background(
-                                MaterialTheme.colors.surface,
+                                MaterialTheme.colors.surface.copy(alpha = 0.6f),
                                 CircleShape
                             ),
                             onClick = {},

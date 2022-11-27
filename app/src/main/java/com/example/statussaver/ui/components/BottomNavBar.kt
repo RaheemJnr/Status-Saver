@@ -37,7 +37,7 @@ private fun HomeBottomItem(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     Surface(
-        color = MaterialTheme.colors.surface
+        color = MaterialTheme.colors.background
     ) {
         BottomNavigation(
             modifier = Modifier
@@ -93,7 +93,7 @@ private fun HomeBottomItem(
                         }
                     },
                     selectedContentColor = MaterialTheme.colors.primary,
-                    unselectedContentColor =MaterialTheme.colors.onBackground,
+                    unselectedContentColor =MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
                 )
             }
         }

@@ -5,14 +5,10 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -51,13 +47,13 @@ fun SavedFileScreen(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 title = "Saved Files",
                 extraItems = {
-                    IconButton(
-                        modifier = Modifier.background(
-                            MaterialTheme.colors.surface,
-                            CircleShape
-                        ),
-                        onClick = {},
-                    ) {}
+//                    IconButton(
+//                        modifier = Modifier.background(
+//                            MaterialTheme.colors.surface,
+//                            CircleShape
+//                        ),
+//                        onClick = {},
+//                    ) {}
                 }
             )
             Spacer(modifier = Modifier.height(8.dp))
