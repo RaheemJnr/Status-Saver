@@ -8,7 +8,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
@@ -59,8 +59,8 @@ fun WABusiness(
                             onClick = {},
                         ) {
                             Icon(
-                                imageVector = Icons.Rounded.Settings,
-                                contentDescription = "Settings",
+                                imageVector = Icons.Rounded.MoreVert,
+                                contentDescription = "MoreVert",
                                 tint = MaterialTheme.colors.onSurface
 
                             )
