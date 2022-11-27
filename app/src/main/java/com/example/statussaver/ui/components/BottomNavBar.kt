@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.BottomNavigation
@@ -41,6 +42,7 @@ private fun HomeBottomItem(
     val currentRoute = navBackStackEntry?.destination?.route
     BottomNavigation(
         modifier = Modifier
+            .navigationBarsPadding()
             .padding(10.dp, 0.dp, 10.dp, 0.dp)
             .height(100.dp),
         backgroundColor = Color.White,
