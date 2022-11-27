@@ -37,8 +37,6 @@ fun TopAppBar(
             .height(56.dp)
             .background(color),
     ) {
-//
-
         Text(
             text = title,
             color = titleColorFilter,
