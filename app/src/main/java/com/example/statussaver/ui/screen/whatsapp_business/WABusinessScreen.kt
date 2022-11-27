@@ -78,8 +78,6 @@ fun WABusiness(
                     imageStatus = imageStatus,
                     videoStatus = videoStatus
                 )
-
-
             }
 
         }

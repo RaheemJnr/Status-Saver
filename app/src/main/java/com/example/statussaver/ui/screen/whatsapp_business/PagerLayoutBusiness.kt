@@ -103,7 +103,6 @@ fun PagerBusiness(
                         }
                     }
                 }
-
             }
             //video
             1 -> {

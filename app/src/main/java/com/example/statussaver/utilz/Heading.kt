@@ -47,7 +47,6 @@ fun StatusPageHeading(
                 color = contentColor,
                 textAlign = TextAlign.Start
             )
-
             extraItems()
         }
     }
