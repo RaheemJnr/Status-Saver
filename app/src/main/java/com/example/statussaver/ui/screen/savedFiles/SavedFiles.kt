@@ -5,11 +5,11 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
@@ -34,37 +34,48 @@ fun SavedFileScreen(
     mainViewModel.getSavedFiles()
     val isRefreshing = mainViewModel.isRefreshing
     val context = (LocalContext.current) as Activity
-
-
-    Box(modifier = Modifier.fillMaxSize()) {
-        SwipeRefresh(
-            state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
-            onRefresh = {
-                mainViewModel.refresh()
-                mainViewModel.getWABusinessStatusImage()
-                mainViewModel.getWhatsappStatusImage()
-            },
+    Scaffold(
+        modifier = Modifier
+    ) { contentPadding ->
+        Box(
+            modifier = Modifier
+                .padding(contentPadding)
+                .fillMaxSize()
         ) {
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 128.dp)
+            Spacer(
+                modifier = Modifier
+                    .statusBarsPadding()
+                    .height(50.dp)
+            )
+            SwipeRefresh(
+                state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
+                onRefresh = {
+                    mainViewModel.refresh()
+                    mainViewModel.getWABusinessStatusImage()
+                    mainViewModel.getWhatsappStatusImage()
+                },
             ) {
-                savedStatus.value?.let { list ->
-                    items(
-                        items = list,
-                        key = {
-                            it.path
-                        },
-                        contentType = {
-                            it.path
-                        }
-                    ) {
-                        if (!it.isVideo && it.title.endsWith(".jpg")) {
-                            ImageLayout(status = it, touchImageResource = R.drawable.share) {
-                                shareFileIntentForImage(status = it, context = context)
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(minSize = 128.dp)
+                ) {
+                    savedStatus.value?.let { list ->
+                        items(
+                            items = list,
+                            key = {
+                                it.path
+                            },
+                            contentType = {
+                                it.path
                             }
-                        } else {
-                            VideoLayout(status = it, touchImageResource = R.drawable.share) {
-                                shareFileIntentForVideo(status = it, context = context)
+                        ) {
+                            if (!it.isVideo && it.title.endsWith(".jpg")) {
+                                ImageLayout(status = it, touchImageResource = R.drawable.share) {
+                                    shareFileIntentForImage(status = it, context = context)
+                                }
+                            } else {
+                                VideoLayout(status = it, touchImageResource = R.drawable.share) {
+                                    shareFileIntentForVideo(status = it, context = context)
+                                }
                             }
                         }
                     }
@@ -72,6 +83,9 @@ fun SavedFileScreen(
             }
         }
     }
+
+
+
 }
 
 private fun shareFileIntentForImage(status: Status, context: Context) {
