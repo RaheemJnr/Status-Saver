@@ -67,7 +67,7 @@ fun WABusiness(
                         }
                     }
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 //
                 PagerBusiness(
                     mainViewModel = mainViewModel,

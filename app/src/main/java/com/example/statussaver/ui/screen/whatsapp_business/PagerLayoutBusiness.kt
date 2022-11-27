@@ -166,14 +166,15 @@ private fun TabRowComposable(
         indicator = { tabPositions ->
             CustomTabIndicator(currentTabPosition = tabPositions[pagerState.currentPage])
         },
-        backgroundColor = Color.White,
+        backgroundColor = Color.Transparent,
+        contentColor = MaterialTheme.colors.onBackground,
         divider = {}
     ) {
         // Add tabs for all of our pages
         tabsTitles.forEachIndexed { index, title ->
             TabItem(
                 title = title.value,
-                textColor = getDashboardTabTextColor(
+                textColor = getTabColor(
                     tabPage = pagerState,
                     selectedTabPage = index
 
@@ -190,7 +191,7 @@ private fun TabRowComposable(
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-private fun getDashboardTabTextColor(
+private fun getTabColor(
     tabPage: PagerState,
     selectedTabPage: Int,
 ): Color =
