@@ -2,10 +2,11 @@ package com.example.statussaver.ui.screen.whatsapp
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.Tab
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TabRow
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -21,8 +22,10 @@ import com.example.statussaver.R
 import com.example.statussaver.model.Status
 import com.example.statussaver.ui.components.ImageLayout
 import com.example.statussaver.ui.components.VideoLayout
+import com.example.statussaver.ui.screen.whatsapp_business.getTabColor
 import com.example.statussaver.utilz.Common
 import com.example.statussaver.utilz.CustomTabIndicator
+import com.example.statussaver.utilz.TabItem
 import com.example.statussaver.utilz.TabItems
 import com.example.statussaver.viewmodel.MainViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -157,23 +160,27 @@ fun PagerWhatsapp(
 private fun TabRowComposable(
     pagerState: PagerState,
     tabsTitles: List<TabItems>,
-    scope: CoroutineScope
+    scope: CoroutineScope,
+    modifier: Modifier = Modifier
 ) {
     TabRow(
+        modifier = modifier.width(250.dp),
         selectedTabIndex = pagerState.currentPage,
         indicator = { tabPositions ->
-               CustomTabIndicator(currentTabPosition = tabPositions[pagerState.currentPage])
-
+            CustomTabIndicator(currentTabPosition = tabPositions[pagerState.currentPage])
         },
-        backgroundColor = Color.White,
-        divider = {
-        }
+        backgroundColor = Color.Transparent,
+        contentColor = MaterialTheme.colors.onBackground,
+        divider = {}
     ) {
         // Add tabs for all of our pages
         tabsTitles.forEachIndexed { index, title ->
-            Tab(
-                text = { Text(text = title.value) },
-                selected = pagerState.currentPage == index,
+            TabItem(
+                title = title.value,
+                textColor = getTabColor(
+                    tabPage = pagerState,
+                    selectedTabPage = index
+                ),
                 onClick = {
                     scope.launch {
                         pagerState.animateScrollToPage(page = index)

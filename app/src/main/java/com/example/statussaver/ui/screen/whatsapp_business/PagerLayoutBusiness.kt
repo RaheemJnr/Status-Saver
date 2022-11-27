@@ -199,8 +199,7 @@ private fun TabRowComposable(
 
 
 @OptIn(ExperimentalPagerApi::class)
-@Composable
-private fun getTabColor(
+@Composable fun getTabColor(
     tabPage: PagerState,
     selectedTabPage: Int,
 ): Color =
