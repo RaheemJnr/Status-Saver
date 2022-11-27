@@ -1,8 +1,7 @@
 package com.example.statussaver.ui.screen.whatsapp_business
 
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -22,6 +21,7 @@ import com.example.statussaver.R
 import com.example.statussaver.model.Status
 import com.example.statussaver.ui.components.ImageLayout
 import com.example.statussaver.ui.components.VideoLayout
+import com.example.statussaver.ui.theme.Dimens
 import com.example.statussaver.utilz.Common
 import com.example.statussaver.utilz.CustomTabIndicator
 import com.example.statussaver.utilz.TabItem
@@ -162,6 +162,7 @@ private fun TabRowComposable(
     scope: CoroutineScope
 ) {
     TabRow(
+        modifier = Modifier.width(250.dp),
         selectedTabIndex = pagerState.currentPage,
         indicator = { tabPositions ->
             CustomTabIndicator(currentTabPosition = tabPositions[pagerState.currentPage])
@@ -186,6 +187,7 @@ private fun TabRowComposable(
             )
         }
     }
+    Spacer(modifier = Modifier.height(Dimens.MediumPadding.size))
 }
 
 
