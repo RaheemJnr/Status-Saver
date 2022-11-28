@@ -40,6 +40,7 @@ class MainViewModel() : ViewModel() {
     //whats business image
     private val _waBusinessImageStatus = MutableLiveData<UIDataState<UIState>>()
     val waBusinessImageStatus: LiveData<UIDataState<UIState>> get() = _waBusinessImageStatus
+
     //whats business video
     private val _waBusinessVideoStatus = MutableLiveData<UIDataState<UIState>>()
     val waBusinessVideoStatus: LiveData<UIDataState<UIState>> get() = _waBusinessVideoStatus
@@ -125,55 +126,67 @@ class MainViewModel() : ViewModel() {
 
     //
     private fun executeForBusinessImage(wAFolder: File) {
-        val businessImageStatus = arrayListOf<Status>()
+        //  val businessImageStatus = arrayListOf<Status>()
         viewModelScope.launch {
             val statusFiles: Array<File>? = wAFolder.listFiles()
-            businessImageStatus.clear()
+            // businessImageStatus.clear()
             _waBusinessImageStatus.postValue(UIDataState.loading())
             if (statusFiles != null && statusFiles.isNotEmpty()) {
                 statusFiles.sortByDescending { it.lastModified() }
                 for (file in statusFiles) {
                     val status = Status(file = file, title = file.name, path = file.absolutePath)
                     if (!status.isVideo && status.title.endsWith(".jpg")) {
-                        businessImageStatus.add(status)
+                        //   businessImageStatus.add(status)
                         _waBusinessImageStatus.postValue(
                             UIDataState.success(
                                 UIState(
-                                    status = listOf(status),
+                                    status = arrayListOf(status),
                                     errorMessage = null
                                 )
                             )
                         )
                     }
                 }
-                if (businessImageStatus.size <= 0) {
-                  _waBusinessImageStatus.postValue(UIDataState.failed("No File Found"))
-                }
+//                if (businessImageStatus.size <= 0) {
+//                  _waBusinessImageStatus.postValue(UIDataState.failed("No File Found"))
+//                }
             } else {
-                _waBusinessImageStatus.postValue(UIDataState.failed("No File Found"))
+                _waBusinessImageStatus.postValue(
+                    UIDataState.failed(
+                        UIState(
+                            status = null,
+                            errorMessage = "No File Found"
+                        )
+                    )
+                )
             }
         }
 
     }
 
     private fun executeForBusinessVideo(waFolder: File) {
-        val businessVideoStatus = arrayListOf<Status>()
+        //val businessVideoStatus = arrayListOf<Status>()
         viewModelScope.launch {
             val statusFiles = waFolder.listFiles()
-            businessVideoStatus.clear()
+            //  businessVideoStatus.clear()
             _waBusinessVideoStatus.postValue(UIDataState.loading())
             if (statusFiles != null && statusFiles.isNotEmpty()) {
                 statusFiles.sortByDescending { it.lastModified() }
                 for (file in statusFiles) {
                     val status = Status(file, file.name, file.absolutePath)
                     if (status.isVideo) {
-                        businessVideoStatus.add(status)
-                        _waBusinessVideoStatus.postValue(businessVideoStatus)
+                        //       businessVideoStatus.add(status)
+                        _waBusinessVideoStatus.postValue(
+                            UIDataState.success(
+                                UIState(status = arrayListOf(status), null)
+                            )
+                        )
                     }
                 }
-                if (businessVideoStatus.size <= 0) _errorMessageBusiness.postValue("No File Found")
+                // if (businessVideoStatus.size <= 0) _errorMessageBusiness.postValue("No File Found")
+
             } else {
-                _errorMessageBusiness.postValue("No File found")
+                _waBusinessVideoStatus.postValue(UIDataState.failed(UIState(null, "No File Found")))
             }
         }
     }

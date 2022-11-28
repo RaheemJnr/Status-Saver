@@ -23,7 +23,7 @@ data class Status(
 sealed class UIDataState<T> {
     class Loading<T> : UIDataState<T>()
     data class Success<T>(val data: T) : UIDataState<T>()
-    class Failed<T>(val message: String) : UIDataState<T>()
+    class Failed<T>(val message: T) : UIDataState<T>()
 
     val isLoading get() = this is Loading
 
@@ -34,6 +34,11 @@ sealed class UIDataState<T> {
     companion object {
         fun <T> loading() = Loading<T>()
         fun <T> success(data: T) = Success(data)
-        fun <T> failed(message: String) = Failed<T>(message)
+        fun <T> failed(message: T) = Failed<T>(message)
     }
 }
+
+data class UIState(
+    val status: ArrayList<Status>? = arrayListOf(),
+    val errorMessage: String? = null
+)
