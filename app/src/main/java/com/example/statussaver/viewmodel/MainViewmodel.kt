@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.statussaver.model.Status
+import com.example.statussaver.model.UIDataState
+import com.example.statussaver.ui.screen.state.UIState
 import com.example.statussaver.utilz.Common
 import com.example.statussaver.utilz.Constants.BUSINESS_STATUS_DIRECTORY
 import com.example.statussaver.utilz.Constants.BUSINESS_STATUS_DIRECTORY_NEW
@@ -35,18 +37,18 @@ class MainViewModel() : ViewModel() {
         }
     }
 
+    //whats business image
+    private val _waBusinessImageStatus = MutableLiveData<UIDataState<UIState>>()
+    val waBusinessImageStatus: LiveData<UIDataState<UIState>> get() = _waBusinessImageStatus
+    //whats business video
+    private val _waBusinessVideoStatus = MutableLiveData<UIDataState<UIState>>()
+    val waBusinessVideoStatus: LiveData<UIDataState<UIState>> get() = _waBusinessVideoStatus
 
-    private val _waBusinessImageStatus = MutableLiveData<List<Status>>()
-    val waBusinessImageStatus: LiveData<List<Status>> get() = _waBusinessImageStatus
-
-    private val _waBusinessVideoStatus = MutableLiveData<List<Status>>()
-    val waBusinessVideoStatus: LiveData<List<Status>> get() = _waBusinessVideoStatus
-
-    //
+    // whatsapp image
     private val _whatsappImageStatus = MutableLiveData<List<Status>>()
     val whatsappImageStatus: LiveData<List<Status>> get() = _whatsappImageStatus
 
-    //
+    /// whatsapp video
     private val _whatsappVideoStatus = MutableLiveData<List<Status>>()
     val whatsappVideoStatus: LiveData<List<Status>> get() = _whatsappVideoStatus
 
@@ -57,6 +59,7 @@ class MainViewModel() : ViewModel() {
     //observe ui error
     private val _errorMessageBusiness = MutableLiveData<String>()
     val errorMessageBusiness: LiveData<String> get() = _errorMessageBusiness
+
     //
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> get() = _errorMessage
@@ -126,18 +129,28 @@ class MainViewModel() : ViewModel() {
         viewModelScope.launch {
             val statusFiles: Array<File>? = wAFolder.listFiles()
             businessImageStatus.clear()
+            _waBusinessImageStatus.postValue(UIDataState.loading())
             if (statusFiles != null && statusFiles.isNotEmpty()) {
                 statusFiles.sortByDescending { it.lastModified() }
                 for (file in statusFiles) {
                     val status = Status(file = file, title = file.name, path = file.absolutePath)
                     if (!status.isVideo && status.title.endsWith(".jpg")) {
                         businessImageStatus.add(status)
-                        _waBusinessImageStatus.postValue(businessImageStatus)
+                        _waBusinessImageStatus.postValue(
+                            UIDataState.success(
+                                UIState(
+                                    status = listOf(status),
+                                    errorMessage = null
+                                )
+                            )
+                        )
                     }
                 }
-                if (businessImageStatus.size <= 0) {_errorMessageBusiness.postValue("No File Found")}
+                if (businessImageStatus.size <= 0) {
+                  _waBusinessImageStatus.postValue(UIDataState.failed("No File Found"))
+                }
             } else {
-                _errorMessageBusiness.postValue("No File found")
+                _waBusinessImageStatus.postValue(UIDataState.failed("No File Found"))
             }
         }
 
@@ -148,6 +161,7 @@ class MainViewModel() : ViewModel() {
         viewModelScope.launch {
             val statusFiles = waFolder.listFiles()
             businessVideoStatus.clear()
+            _waBusinessVideoStatus.postValue(UIDataState.loading())
             if (statusFiles != null && statusFiles.isNotEmpty()) {
                 statusFiles.sortByDescending { it.lastModified() }
                 for (file in statusFiles) {
@@ -226,8 +240,7 @@ class MainViewModel() : ViewModel() {
                         }
                     } else _errorMessage.postValue("No File Found")
                 }
-            }
-            else _errorMessage.postValue("Folder Not Found")
+            } else _errorMessage.postValue("Folder Not Found")
         }
     }
 }
