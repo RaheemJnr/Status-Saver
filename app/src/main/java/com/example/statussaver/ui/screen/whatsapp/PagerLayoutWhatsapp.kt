@@ -1,5 +1,6 @@
 package com.example.statussaver.ui.screen.whatsapp
 
+import android.app.Activity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -25,10 +26,7 @@ import com.example.statussaver.ui.components.ImageLayout
 import com.example.statussaver.ui.components.VideoLayout
 import com.example.statussaver.ui.screen.whatsapp_business.getTabColor
 import com.example.statussaver.ui.theme.Dimens
-import com.example.statussaver.utilz.Common
-import com.example.statussaver.utilz.CustomTabIndicator
-import com.example.statussaver.utilz.TabItem
-import com.example.statussaver.utilz.TabItems
+import com.example.statussaver.utilz.*
 import com.example.statussaver.viewmodel.MainViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -53,7 +51,7 @@ fun PagerWhatsapp(
     val tabsTitles =
         remember { listOf(TabItems("Images"), TabItems("Videos")) }
     //
-    val context = LocalContext.current
+    val context = (LocalContext.current) as Activity
 
     TabRowComposable(
         pagerState, tabsTitles, scope,
@@ -99,10 +97,14 @@ fun PagerWhatsapp(
                                     ) {
                                         ImageLayout(
                                             status = it,
-                                            touchImageResource = R.drawable.download_icon
-                                        ) {
-                                            Common.saveFile(status = it, context = context)
-                                        }
+                                            touchImageResource = R.drawable.download_icon,
+                                            onViewClicked = {
+                                                viewImage(context, it)
+                                            },
+                                            onSaveClicked = {
+                                                Common.saveFile(status = it, context = context)
+                                            }
+                                        )
                                     }
                                 }
                             }
@@ -144,10 +146,14 @@ fun PagerWhatsapp(
                                     ) {
                                         VideoLayout(
                                             status = it,
-                                            touchImageResource = R.drawable.download_icon
-                                        ) {
-                                            Common.saveFile(status = it, context = context)
-                                        }
+                                            touchImageResource = R.drawable.download_icon,
+                                            onViewClicked = {
+                                                viewImage(context, it)
+                                            },
+                                            onSaveClicked = {
+                                                Common.saveFile(status = it, context = context)
+                                            }
+                                        )
                                     }
                                 }
                             }

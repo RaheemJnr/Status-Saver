@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
@@ -82,7 +83,7 @@ fun ImageLayout(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(35.dp)
-                                    .alpha(0.4f)
+                                    .alpha(0.8f)
                                     .background(Color.Black)
                             ) {
                                 Image(
@@ -108,7 +109,7 @@ fun ImageLayout(
                                 Image(
                                     Icons.Default.AccountCircle,
                                     contentDescription = "",
-                                    colorFilter = ColorFilter.tint(Color.White),
+                                    colorFilter = ColorFilter.tint(Color.White, BlendMode.Clear),
                                     modifier = Modifier
                                         .wrapContentSize()
                                         .size(30.dp)
@@ -117,7 +118,7 @@ fun ImageLayout(
                                             Toast
                                                 .makeText(
                                                     context,
-                                                    "View",
+                                                    "View Image",
                                                     Toast.LENGTH_SHORT
                                                 )
                                                 .show()

@@ -9,6 +9,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
@@ -37,7 +40,8 @@ import kotlinx.coroutines.Dispatchers
 fun VideoLayout(
     status: Status,
     touchImageResource: Int,
-    onSaveClicked: () -> Unit
+    onSaveClicked: () -> Unit,
+    onViewClicked: () -> Unit,
 ) {
     val context = LocalContext.current
     var visible by rememberSaveable { mutableStateOf(false) }
@@ -98,7 +102,7 @@ fun VideoLayout(
                             contentAlignment = Alignment.BottomCenter,
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)
-                                .alpha(0.4f)
+                                .alpha(0.8f)
                         ) {
 
                             Row(
@@ -107,7 +111,6 @@ fun VideoLayout(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(35.dp)
-                                    // .alpha(0.4f)
                                     .background(Color.Black)
                             ) {
                                 Image(
@@ -123,6 +126,26 @@ fun VideoLayout(
                                                 .makeText(
                                                     context,
                                                     "Saved to ${Common.APP_DIR}",
+                                                    Toast.LENGTH_SHORT
+                                                )
+                                                .show()
+                                            visible = !visible
+                                        },
+                                    alpha = 1f,
+                                )
+                                Image(
+                                    Icons.Default.AccountCircle,
+                                    contentDescription = "View image",
+                                    colorFilter = ColorFilter.tint(Color.White, BlendMode.Clear),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .size(30.dp)
+                                        .clickable {
+                                            onViewClicked()
+                                            Toast
+                                                .makeText(
+                                                    context,
+                                                    "View Video",
                                                     Toast.LENGTH_SHORT
                                                 )
                                                 .show()

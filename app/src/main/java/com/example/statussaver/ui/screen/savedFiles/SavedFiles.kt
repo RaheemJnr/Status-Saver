@@ -97,10 +97,14 @@ fun SavedFileScreen(
                                 } else {
                                     VideoLayout(
                                         status = it,
-                                        touchImageResource = R.drawable.share
-                                    ) {
-                                        shareFileIntentForVideo(status = it, context = context)
-                                    }
+                                        touchImageResource = R.drawable.share,
+                                        onSaveClicked = {
+                                            shareFileIntentForVideo(status = it, context = context)
+                                        },
+                                        onViewClicked = {
+                                            viewImage(context, it)
+                                        }
+                                    )
                                 }
                             }
                         }
