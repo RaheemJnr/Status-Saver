@@ -9,8 +9,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
@@ -40,6 +37,7 @@ import kotlinx.coroutines.Dispatchers
 fun VideoLayout(
     status: Status,
     touchImageResource: Int,
+    viewImageResource: Int,
     onSaveClicked: () -> Unit,
     onViewClicked: () -> Unit,
 ) {
@@ -107,7 +105,7 @@ fun VideoLayout(
 
                             Row(
                                 verticalAlignment = Alignment.Bottom,
-                                horizontalArrangement = Arrangement.Center,
+                                horizontalArrangement = Arrangement.SpaceEvenly,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(35.dp)
@@ -118,7 +116,7 @@ fun VideoLayout(
                                     contentDescription = "",
                                     colorFilter = ColorFilter.tint(Color.White),
                                     modifier = Modifier
-                                        .fillMaxWidth()
+                                        .wrapContentSize()
                                         .size(30.dp)
                                         .clickable {
                                             onSaveClicked()
@@ -134,11 +132,11 @@ fun VideoLayout(
                                     alpha = 1f,
                                 )
                                 Image(
-                                    Icons.Default.AccountCircle,
+                                    painter = painterResource(id = viewImageResource),
                                     contentDescription = "View image",
-                                    colorFilter = ColorFilter.tint(Color.White, BlendMode.Clear),
+                                    colorFilter = ColorFilter.tint(Color.White),
                                     modifier = Modifier
-                                        .fillMaxWidth()
+                                        .wrapContentSize()
                                         .size(30.dp)
                                         .clickable {
                                             onViewClicked()

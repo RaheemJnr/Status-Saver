@@ -97,7 +97,8 @@ fun PagerBusiness(
                                     ) {
                                         ImageLayout(
                                             status = it,
-                                            touchImageResource = R.drawable.download_icon,
+                                            saveImageResource = R.drawable.download_icon,
+                                            viewImageResource = R.drawable.view,
                                             onViewClicked = {
                                                 viewImage(context, it)
                                             },
@@ -147,6 +148,7 @@ fun PagerBusiness(
                                         VideoLayout(
                                             status = it,
                                             touchImageResource = R.drawable.download_icon,
+                                            viewImageResource = R.drawable.view,
                                             onSaveClicked = {
                                                 Common.saveFile(status = it, context = context)
                                             },
