@@ -43,15 +43,7 @@ fun SavedFileScreen(
             StatusPageHeading(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 title = "Saved Files",
-                extraItems = {
-//                    IconButton(
-//                        modifier = Modifier.background(
-//                            MaterialTheme.colors.surface,
-//                            CircleShape
-//                        ),
-//                        onClick = {},
-//                    ) {}
-                }
+                extraItems = {}
             )
             Spacer(modifier = Modifier.height(8.dp))
             Box(

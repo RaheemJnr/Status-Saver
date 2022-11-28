@@ -27,8 +27,8 @@ fun Whatsapp(
     mainViewModel.getWhatsappStatusImage()
     mainViewModel.getWhatsappStatusVideo()
 
-    Log.d("Whatsapp", "$imageStatus")
-    Log.d("Whatsapp", "$videoStatus")
+    Log.i("Whatsapp", "$imageStatus")
+    Log.i("Whatsapp", "$videoStatus")
 
     val isRefreshing = mainViewModel.isRefreshing
     val pagerState = rememberPagerState()
@@ -52,22 +52,7 @@ fun Whatsapp(
                 StatusPageHeading(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     title = "Whatsapp",
-                    extraItems = {
-//                        IconButton(
-//                            modifier = Modifier.background(
-//                                MaterialTheme.colors.surface,
-//                                CircleShape
-//                            ),
-//                            onClick = {},
-//                        ) {
-////                            Icon(
-////                                imageVector = Icons.Rounded.MoreVert,
-////                                contentDescription = "MoreVert",
-////                                tint = MaterialTheme.colors.onSurface
-////
-////                            )
-//                        }
-                    }
+                    extraItems = {}
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 PagerWhatsapp(

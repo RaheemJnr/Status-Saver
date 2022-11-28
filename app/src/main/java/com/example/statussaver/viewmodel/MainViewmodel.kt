@@ -1,6 +1,5 @@
 package com.example.statussaver.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -178,7 +177,6 @@ class MainViewModel() : ViewModel() {
                     val status = Status(file = file, title = file.name, path = file.absolutePath)
                     if (!status.isVideo && status.title.endsWith(".jpg")) {
                         whatsappImageStatusList.add(status)
-                        Log.d("WhatsApp", "$status")
                         _whatsappImageStatus.postValue(whatsappImageStatusList)
                     }
                 }
@@ -200,7 +198,6 @@ class MainViewModel() : ViewModel() {
                     val status = Status(file, file.name, file.absolutePath)
                     if (status.isVideo) {
                         whatsappVideoStatus.add(status)
-                        Log.d("WhatsApp", "$status")
                         _whatsappVideoStatus.postValue(whatsappVideoStatus)
                     }
                 }

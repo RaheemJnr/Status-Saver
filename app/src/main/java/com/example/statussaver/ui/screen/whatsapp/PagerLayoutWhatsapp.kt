@@ -10,12 +10,10 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TabRow
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -54,7 +52,9 @@ fun PagerWhatsapp(
     val context = (LocalContext.current) as Activity
 
     TabRowComposable(
-        pagerState, tabsTitles, scope,
+        pagerState,
+        tabsTitles,
+        scope,
         modifier = Modifier.padding(horizontal = Dimens.MediumPadding.size)
     )
     HorizontalPager(
@@ -64,14 +64,14 @@ fun PagerWhatsapp(
         when (page) {
             //image
             0 -> {
-                if (errorMessage.value?.isNotEmpty() == true) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = "${errorMessage.value}")
-                    }
-                } else {
+//                if (errorMessage.value?.isNotEmpty() == true) {
+//                    Box(
+//                        modifier = Modifier.fillMaxSize(),
+//                        contentAlignment = Alignment.Center
+//                    ) {
+//                        Text(text = "${errorMessage.value}")
+//                    }
+//                } else {
                     Box(modifier = Modifier.fillMaxSize()) {
                         SwipeRefresh(
                             state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
@@ -83,6 +83,7 @@ fun PagerWhatsapp(
                         ) {
 
                             LazyVerticalGrid(
+                                modifier = Modifier.padding(horizontal = 2.dp),
                                 columns = GridCells.Adaptive(minSize = 128.dp)
                             ) {
                                 imageStatus.value?.let { list ->
@@ -111,19 +112,19 @@ fun PagerWhatsapp(
                             }
                         }
                     }
-                }
+                //}
 
             }
             //video
             1 -> {
-                if (errorMessage.value?.isNotEmpty() == true) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = "${errorMessage.value}")
-                    }
-                } else {
+//                if (errorMessage.value?.isNotEmpty() == true) {
+//                    Box(
+//                        modifier = Modifier.fillMaxSize(),
+//                        contentAlignment = Alignment.Center
+//                    ) {
+//                        Text(text = "${errorMessage.value}")
+//                    }
+//                } else {
                     Box(modifier = Modifier.fillMaxSize()) {
                         SwipeRefresh(
                             state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
@@ -161,7 +162,7 @@ fun PagerWhatsapp(
                             }
                         }
                     }
-                }
+             //   }
 
             }
         }
