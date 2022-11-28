@@ -1,7 +1,14 @@
 package com.example.statussaver.utilz
 
 import android.Manifest
+import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
 import android.os.Environment
+import android.widget.Toast
+import androidx.core.content.FileProvider
+import com.example.statussaver.model.Status
 import java.io.File
 
 
@@ -37,3 +44,52 @@ object Constants {
 data class TabItems(
     val value: String,
 )
+
+
+fun viewImage(context: Activity, status: Status) {
+    val uri = FileProvider.getUriForFile(
+        context,
+        "com.example.statussaver.provider",
+        status.file
+    )
+    val intent = Intent(Intent.ACTION_VIEW, uri)
+    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    context.startActivity(intent)
+}
+//
+fun shareFileIntentForImage(status: Status, context: Context) {
+
+    val uri = FileProvider.getUriForFile(context, "com.example.statussaver.provider", status.file)
+    val intent = Intent(Intent.ACTION_SEND)
+    intent.type = "image/*"
+    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    intent.putExtra(Intent.EXTRA_STREAM, uri)
+
+    try {
+        context.startActivity(Intent.createChooser(intent, ""))
+    } catch (ex: ActivityNotFoundException) {
+        Toast.makeText(
+            context,
+            "Sorry, we cannot display this image!",
+            Toast.LENGTH_LONG
+        ).show()
+    }
+}
+//
+fun shareFileIntentForVideo(status: Status, context: Context) {
+    val uri = FileProvider.getUriForFile(context, "com.example.statussaver.provider", status.file)
+    val intent = Intent(Intent.ACTION_SEND)
+    intent.type = "image/*"
+    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    intent.putExtra(Intent.EXTRA_STREAM, uri)
+
+    try {
+        context.startActivity(Intent.createChooser(intent, ""))
+    } catch (ex: ActivityNotFoundException) {
+        Toast.makeText(
+            context,
+            "Sorry, we cannot display this image!",
+            Toast.LENGTH_LONG
+        ).show()
+    }
+}

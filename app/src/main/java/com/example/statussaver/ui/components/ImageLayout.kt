@@ -9,6 +9,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,7 +35,8 @@ import com.example.statussaver.utilz.Common
 fun ImageLayout(
     status: Status,
     touchImageResource: Int,
-    onSaveClicked: () -> Unit
+    onSaveClicked: () -> Unit,
+    onViewClicked: () -> Unit
 ) {
     val context = LocalContext.current
     var visible by rememberSaveable { mutableStateOf(false) }
@@ -75,7 +78,7 @@ fun ImageLayout(
 
                             Row(
                                 verticalAlignment = Alignment.Bottom,
-                                horizontalArrangement = Arrangement.Center,
+                                horizontalArrangement = Arrangement.SpaceEvenly,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(35.dp)
@@ -87,7 +90,7 @@ fun ImageLayout(
                                     contentDescription = "",
                                     colorFilter = ColorFilter.tint(Color.White),
                                     modifier = Modifier
-                                        .fillMaxWidth()
+                                        .wrapContentSize()
                                         .size(30.dp)
                                         .clickable {
                                             onSaveClicked()
@@ -95,6 +98,26 @@ fun ImageLayout(
                                                 .makeText(
                                                     context,
                                                     "Saved to ${Common.APP_DIR}",
+                                                    Toast.LENGTH_SHORT
+                                                )
+                                                .show()
+                                            visible = !visible
+                                        },
+                                    alpha = 1f,
+                                )
+                                Image(
+                                    Icons.Default.AccountCircle,
+                                    contentDescription = "",
+                                    colorFilter = ColorFilter.tint(Color.White),
+                                    modifier = Modifier
+                                        .wrapContentSize()
+                                        .size(30.dp)
+                                        .clickable {
+                                            onViewClicked()
+                                            Toast
+                                                .makeText(
+                                                    context,
+                                                    "View",
                                                     Toast.LENGTH_SHORT
                                                 )
                                                 .show()

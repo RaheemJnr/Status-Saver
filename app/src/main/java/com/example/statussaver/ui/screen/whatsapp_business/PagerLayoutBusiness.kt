@@ -1,8 +1,7 @@
 package com.example.statussaver.ui.screen.whatsapp_business
 
 
-import android.content.Intent
-import android.net.Uri
+import android.app.Activity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -24,10 +23,7 @@ import com.example.statussaver.model.Status
 import com.example.statussaver.ui.components.ImageLayout
 import com.example.statussaver.ui.components.VideoLayout
 import com.example.statussaver.ui.theme.Dimens
-import com.example.statussaver.utilz.Common
-import com.example.statussaver.utilz.CustomTabIndicator
-import com.example.statussaver.utilz.TabItem
-import com.example.statussaver.utilz.TabItems
+import com.example.statussaver.utilz.*
 import com.example.statussaver.viewmodel.MainViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -52,7 +48,7 @@ fun PagerBusiness(
     val tabsTitles =
         remember { listOf(TabItems("Images"), TabItems("Videos")) }
     //
-    val context = LocalContext.current
+    val context = (LocalContext.current) as Activity
 
     TabRowComposable(
         pagerState,
@@ -101,16 +97,14 @@ fun PagerBusiness(
                                     ) {
                                         ImageLayout(
                                             status = it,
-                                            touchImageResource = R.drawable.download_icon
-                                        ) {
-                                            //Common.saveFile(status = it, context = context)
-                                            context.startActivity(
-                                                Intent(
-                                                    Intent.ACTION_VIEW,
-                                                    Uri.parse(it.file.toString())
-                                                ).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                            )
-                                        }
+                                            touchImageResource = R.drawable.download_icon,
+                                            onViewClicked = {
+                                                viewImage(context, it)
+                                            },
+                                            onSaveClicked = {
+                                                Common.saveFile(status = it, context = context)
+                                            }
+                                        )
                                     }
                                 }
                             }
@@ -167,6 +161,9 @@ fun PagerBusiness(
         }
     }
 }
+
+
+
 
 @Composable
 @OptIn(ExperimentalPagerApi::class)
