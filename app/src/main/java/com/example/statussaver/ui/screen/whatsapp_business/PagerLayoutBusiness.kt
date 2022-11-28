@@ -1,6 +1,8 @@
 package com.example.statussaver.ui.screen.whatsapp_business
 
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -101,7 +103,13 @@ fun PagerBusiness(
                                             status = it,
                                             touchImageResource = R.drawable.download_icon
                                         ) {
-                                            Common.saveFile(status = it, context = context)
+                                            //Common.saveFile(status = it, context = context)
+                                            context.startActivity(
+                                                Intent(
+                                                    Intent.ACTION_VIEW,
+                                                    Uri.parse(it.file.toString())
+                                                ).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                            )
                                         }
                                     }
                                 }
@@ -199,7 +207,8 @@ private fun TabRowComposable(
 
 
 @OptIn(ExperimentalPagerApi::class)
-@Composable fun getTabColor(
+@Composable
+fun getTabColor(
     tabPage: PagerState,
     selectedTabPage: Int,
 ): Color =

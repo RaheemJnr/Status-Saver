@@ -110,11 +110,9 @@ class MainViewModel() : ViewModel() {
     fun getWhatsappStatusVideo() {
         when {
             WHATSAPP_STATUS_DIRECTORY.exists() -> {
-                Log.d("WhatsApp", "video Folder exist")
                 executeForWhatsappVideo(WHATSAPP_STATUS_DIRECTORY)
             }
             WHATSAPP_STATUS_DIRECTORY_NEW.exists() -> {
-                Log.d("WhatsApp", "video new Folder exist")
                 executeForWhatsappVideo(WHATSAPP_STATUS_DIRECTORY_NEW)
             }
             else -> {
@@ -138,7 +136,7 @@ class MainViewModel() : ViewModel() {
                         _waBusinessImageStatus.postValue(businessImageStatus)
                     }
                 }
-                if (businessImageStatus.size <= 0) _errorMessageBusiness.postValue("No File Found")
+                if (businessImageStatus.size <= 0) {_errorMessageBusiness.postValue("No File Found")}
             } else {
                 _errorMessageBusiness.postValue("No File found")
             }
