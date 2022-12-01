@@ -57,9 +57,9 @@ class MainViewModel() : ViewModel() {
     private val _savedStatus = MutableLiveData<UIDataState>()
     val savedStatus: LiveData<UIDataState> get() = _savedStatus
 
-    //
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String> get() = _errorMessage
+//    //
+//    private val _errorMessage = MutableLiveData<String>()
+//    val errorMessage: LiveData<String> get() = _errorMessage
 
     //
     fun getWABusinessStatusImage() {
@@ -69,6 +69,16 @@ class MainViewModel() : ViewModel() {
             }
             BUSINESS_STATUS_DIRECTORY_NEW.exists() -> {
                 executeForBusinessImage(BUSINESS_STATUS_DIRECTORY_NEW)
+            }
+            else -> {
+                _waBusinessImageStatus.postValue(
+                    UIDataState.Failed(
+                        UIState(
+                            status=  UIState.EMPTY ?: listOf(),
+                            errorMessage = "Directory Not Found"
+                        )
+                    )
+                )
             }
         }
     }
@@ -81,9 +91,17 @@ class MainViewModel() : ViewModel() {
             BUSINESS_STATUS_DIRECTORY_NEW.exists() -> {
                 executeForBusinessVideo(BUSINESS_STATUS_DIRECTORY_NEW)
             }
-//            else -> {
-//                _errorMessageBusiness.postValue("Can't find Whatsapp Business Directory")
-//            }
+            else -> {
+                _waBusinessVideoStatus.postValue(
+                    UIDataState.Failed(
+                        UIState(
+                            status=  UIState.EMPTY ?: listOf(),
+                            errorMessage = "Directory Not Found"
+                        )
+                    )
+                )
+            }
+
         }
     }
 
@@ -97,7 +115,14 @@ class MainViewModel() : ViewModel() {
                 executeForWhatsappImage(WHATSAPP_STATUS_DIRECTORY_NEW)
             }
             else -> {
-                _errorMessage.postValue("Can't find Whatsapp Directory")
+                _waBusinessImageStatus.postValue(
+                    UIDataState.Failed(
+                        UIState(
+                            status=  UIState.EMPTY ?: listOf(),
+                            errorMessage = "No File Found"
+                        )
+                    )
+                )
             }
         }
 
@@ -112,7 +137,14 @@ class MainViewModel() : ViewModel() {
                 executeForWhatsappVideo(WHATSAPP_STATUS_DIRECTORY_NEW)
             }
             else -> {
-                _errorMessage.postValue("Can't find Whatsapp Directory")
+                _waBusinessVideoStatus.postValue(
+                    UIDataState.Failed(
+                        UIState(
+                            status=  UIState.EMPTY ?: listOf(),
+                            errorMessage = "No File Found"
+                        )
+                    )
+                )
             }
         }
     }

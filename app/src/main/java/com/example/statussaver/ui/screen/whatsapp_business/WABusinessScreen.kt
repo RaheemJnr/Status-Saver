@@ -31,7 +31,6 @@ fun WABusiness(
     //context
     val imageStatus by mainViewModel.waBusinessImageStatus.observeAsState()
     val videoStatus by mainViewModel.waBusinessVideoStatus.observeAsState()
-  //  val errorMessage by mainViewModel.errorMessageBusiness.observeAsState()
     val isRefreshing = mainViewModel.isRefreshing
     mainViewModel.getWABusinessStatusImage()
     mainViewModel.getWABusinessStatusVideo()

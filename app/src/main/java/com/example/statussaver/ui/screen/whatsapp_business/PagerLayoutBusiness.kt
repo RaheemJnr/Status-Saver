@@ -46,7 +46,6 @@ fun PagerBusiness(
     mainViewModel: MainViewModel,
     pagerState: PagerState,
     scope: CoroutineScope,
-    //errorMessage: State<String?>,
     isRefreshing: StateFlow<Boolean>,
     imageStatus: UIDataState,
     videoStatus: UIDataState

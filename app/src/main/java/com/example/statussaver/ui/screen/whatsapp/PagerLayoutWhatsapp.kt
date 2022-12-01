@@ -10,18 +10,22 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TabRow
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.statussaver.R
 import com.example.statussaver.model.Status
+import com.example.statussaver.model.UIDataState
 import com.example.statussaver.ui.components.ImageLayout
 import com.example.statussaver.ui.components.VideoLayout
+import com.example.statussaver.ui.screen.whatsapp_business.LoaderDialog
 import com.example.statussaver.ui.screen.whatsapp_business.getTabColor
 import com.example.statussaver.ui.theme.Dimens
 import com.example.statussaver.utilz.*
@@ -41,10 +45,9 @@ fun PagerWhatsapp(
     mainViewModel: MainViewModel,
     pagerState: PagerState,
     scope: CoroutineScope,
-    errorMessage: State<String?>,
     isRefreshing: StateFlow<Boolean>,
-    imageStatus: State<List<Status>?>,
-    videoStatus: State<List<Status>?>
+    imageStatus: UIDataState,
+    videoStatus: UIDataState
 ) {
     val tabsTitles =
         remember { listOf(TabItems("Images"), TabItems("Videos")) }
@@ -64,105 +67,103 @@ fun PagerWhatsapp(
         when (page) {
             //image
             0 -> {
-//                if (errorMessage.value?.isNotEmpty() == true) {
-//                    Box(
-//                        modifier = Modifier.fillMaxSize(),
-//                        contentAlignment = Alignment.Center
-//                    ) {
-//                        Text(text = "${errorMessage.value}")
-//                    }
-//                } else {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        SwipeRefresh(
-                            state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
-                            onRefresh = {
-                                mainViewModel.refresh()
-                                mainViewModel.getWABusinessStatusImage()
-                                mainViewModel.getWhatsappStatusImage()
-                            },
-                        ) {
 
-                            LazyVerticalGrid(
-                                modifier = Modifier.padding(horizontal = 2.dp),
-                                columns = GridCells.Adaptive(minSize = 128.dp)
-                            ) {
-                                imageStatus.value?.let { list ->
-                                    items(
-                                        items = list,
-                                        key = {
-                                            it.path
-                                        },
-                                        contentType = {
-                                            it.path
-                                        }
-                                    ) {
-                                        ImageLayout(
-                                            status = it,
-                                            saveImageResource = R.drawable.download_icon,
-                                            viewImageResource = R.drawable.view,
-                                            onViewClicked = {
-                                                viewImage(context, it)
-                                            },
-                                            onSaveClicked = {
-                                                Common.saveFile(status = it, context = context)
-                                            }
-                                        )
-                                    }
-                                }
-                            }
+                when (imageStatus) {
+                    UIDataState.Loading -> {
+                        LoaderDialog()
+                    }
+                   is UIDataState.Success -> {
+                       Box(modifier = Modifier.fillMaxSize()) {
+                           SwipeRefresh(
+                               state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
+                               onRefresh = {
+                                   mainViewModel.refresh()
+                                   mainViewModel.getWABusinessStatusImage()
+                                   mainViewModel.getWhatsappStatusImage()
+                               },
+                           ) {
+
+                               LazyVerticalGrid(
+                                   modifier = Modifier.padding(horizontal = 2.dp),
+                                   columns = GridCells.Adaptive(minSize = 128.dp)
+                               ) {
+                                   items(
+                                       items = imageStatus.feed.status,
+                                       key = {
+                                           it.path
+                                       },
+                                       contentType = {
+                                           it.path
+                                       }
+                                   ) {
+                                       ImageLayout(
+                                           status = it,
+                                           saveImageResource = R.drawable.download_icon,
+                                           viewImageResource = R.drawable.view,
+                                           onViewClicked = {
+                                               viewImage(context, it)
+                                           },
+                                           onSaveClicked = {
+                                               Common.saveFile(status = it, context = context)
+                                           }
+                                       )
+                                   }
+
+                               }
+                           }
+                       }
+                   }
+                    is UIDataState.Failed -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(text = "${imageStatus.feed.errorMessage}")
                         }
                     }
-                //}
+                }
 
             }
             //video
             1 -> {
-//                if (errorMessage.value?.isNotEmpty() == true) {
-//                    Box(
-//                        modifier = Modifier.fillMaxSize(),
-//                        contentAlignment = Alignment.Center
-//                    ) {
-//                        Text(text = "${errorMessage.value}")
-//                    }
-//                } else {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        SwipeRefresh(
-                            state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
-                            onRefresh = {
-                                mainViewModel.refresh()
-                                mainViewModel.getWABusinessStatusVideo()
-                            },
+                Box(modifier = Modifier.fillMaxSize()) {
+                    SwipeRefresh(
+                        state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
+                        onRefresh = {
+                            mainViewModel.refresh()
+                            mainViewModel.getWABusinessStatusVideo()
+                        },
+                    ) {
+                        LazyVerticalGrid(
+                            columns = GridCells.Adaptive(minSize = 128.dp)
                         ) {
-                            LazyVerticalGrid(
-                                columns = GridCells.Adaptive(minSize = 128.dp)
-                            ) {
-                                videoStatus.value?.let { list ->
-                                    items(
-                                        items = list,
-                                        key = {
-                                            it.path
-                                        },
-                                        contentType = {
-                                            it.path
-                                        }
-                                    ) {
-                                        VideoLayout(
-                                            status = it,
-                                            touchImageResource = R.drawable.download_icon,
-                                            viewImageResource = R.drawable.view,
-                                            onViewClicked = {
-                                                viewImage(context, it)
-                                            },
-                                            onSaveClicked = {
-                                                Common.saveFile(status = it, context = context)
-                                            }
-                                        )
+                            videoStatus.value?.let { list ->
+                                items(
+                                    items = list,
+                                    key = {
+                                        it.path
+                                    },
+                                    contentType = {
+                                        it.path
                                     }
+                                ) {
+                                    VideoLayout(
+                                        status = it,
+                                        touchImageResource = R.drawable.download_icon,
+                                        viewImageResource = R.drawable.view,
+                                        onViewClicked = {
+                                            viewImage(context, it)
+                                        },
+                                        onSaveClicked = {
+                                            Common.saveFile(status = it, context = context)
+                                        }
+                                    )
                                 }
                             }
                         }
                     }
-             //   }
+                }
+                //   }
 
             }
         }
