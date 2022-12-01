@@ -15,7 +15,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TabRow
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -70,140 +69,129 @@ fun PagerBusiness(
         when (page) {
             //image
             0 -> {
-                if (errorMessage.value?.isNotEmpty() == true) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = "${errorMessage.value}")
+                when (imageStatus) {
+                    is UIDataState.Loading -> {
+                        LoaderDialog()
                     }
-                } else {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        SwipeRefresh(
-                            state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
-                            onRefresh = {
-                                mainViewModel.refresh()
-                                mainViewModel.getWABusinessStatusImage()
-                                mainViewModel.getWhatsappStatusImage()
-                            },
-                        ) {
-
-                            LazyVerticalGrid(
-                                modifier = Modifier.padding(horizontal = 2.dp),
-                                columns = GridCells.Adaptive(minSize = 128.dp)
+                    is UIDataState.Success -> {
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            SwipeRefresh(
+                                state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
+                                onRefresh = {
+                                    mainViewModel.refresh()
+                                    mainViewModel.getWABusinessStatusImage()
+                                    mainViewModel.getWhatsappStatusImage()
+                                },
                             ) {
-                                when (imageStatus) {
-                                    is UIDataState.Loading -> Unit
-                                    is UIDataState.Success -> {
-                                        items(
-                                            items = imageStatus.feed.status,
-                                            key = {
-                                                it.path
-                                            },
-                                            contentType = {
-                                                it.path
-                                            }
-                                        ) {
-                                            ImageLayout(
-                                                status = it,
-                                                saveImageResource = R.drawable.download_icon,
-                                                viewImageResource = R.drawable.view,
-                                                onViewClicked = {
-                                                    viewImage(context, it)
-                                                },
-                                                onSaveClicked = {
-                                                    Common.saveFile(status = it, context = context)
-                                                }
-                                            )
-                                        }
-                                    }
-                                    is UIDataState.Failed -> {
-                                        Toast.makeText(
-                                            context,
-                                            "${imageStatus.feed.errorMessage}",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-//                                        Box(
-//                                            modifier = Modifier.fillMaxSize(),
-//                                            contentAlignment = Alignment.Center
-//                                        ) {
-//                                            Text(text = "${errorMessage.value}")
-//                                        }
-                                    }
-                                }
 
+                                LazyVerticalGrid(
+                                    modifier = Modifier.padding(horizontal = 2.dp),
+                                    columns = GridCells.Adaptive(minSize = 128.dp)
+                                ) {
+                                    items(
+                                        items = imageStatus.feed.status,
+                                        key = {
+                                            it.path
+                                        },
+                                        contentType = {
+                                            it.path
+                                        }
+                                    ) {
+                                        ImageLayout(
+                                            status = it,
+                                            saveImageResource = R.drawable.download_icon,
+                                            viewImageResource = R.drawable.view,
+                                            onViewClicked = {
+                                                viewImage(context, it)
+                                            },
+                                            onSaveClicked = {
+                                                Common.saveFile(status = it, context = context)
+                                            }
+                                        )
+                                    }
+
+                                }
                             }
                         }
                     }
+                    is UIDataState.Failed -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(text = "${imageStatus.feed.errorMessage}")
+                        }
+                    }
                 }
+
             }
             //video
             1 -> {
-                if (errorMessage.value?.isNotEmpty() == true) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
+//                if (errorMessage.value?.isNotEmpty() == true) {
+//                    Box(
+//                        modifier = Modifier.fillMaxSize(),
+//                        contentAlignment = Alignment.Center
+//                    ) {
+//                        Text(text = "${errorMessage.value}")
+//                    }
+//                } else {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    SwipeRefresh(
+                        state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
+                        onRefresh = {
+                            mainViewModel.refresh()
+                            mainViewModel.getWABusinessStatusVideo()
+                        },
                     ) {
-                        Text(text = "${errorMessage.value}")
-                    }
-                } else {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        SwipeRefresh(
-                            state = rememberSwipeRefreshState(isRefreshing.collectAsState().value),
-                            onRefresh = {
-                                mainViewModel.refresh()
-                                mainViewModel.getWABusinessStatusVideo()
-                            },
+                        val scrollableState = rememberLazyGridState()
+                        LazyVerticalGrid(
+                            modifier = Modifier.padding(horizontal = 2.dp),
+                            columns = GridCells.Adaptive(minSize = 128.dp),
+                            state = scrollableState
                         ) {
-                            val scrollableState = rememberLazyGridState()
-                            LazyVerticalGrid(
-                                modifier = Modifier.padding(horizontal = 2.dp),
-                                columns = GridCells.Adaptive(minSize = 128.dp),
-                                state = scrollableState
-                            ) {
-                                when (videoStatus) {
-                                    is UIDataState.Loading -> Unit
-                                    is UIDataState.Success -> {
-                                        items(
-                                            items = videoStatus.feed.status,
-                                            key = {
-                                                it.path
-                                            },
-                                            contentType = {
-                                                it.path
-                                            }
-                                        ) {
-                                            VideoLayout(
-                                                status = it,
-                                                touchImageResource = R.drawable.download_icon,
-                                                viewImageResource = R.drawable.view,
-                                                onSaveClicked = {
-                                                    Common.saveFile(status = it, context = context)
-                                                },
-                                                onViewClicked = {
-                                                    viewImage(context, it)
-                                                }
-                                            )
+                            when (videoStatus) {
+                                is UIDataState.Loading -> Unit
+                                is UIDataState.Success -> {
+                                    items(
+                                        items = videoStatus.feed.status,
+                                        key = {
+                                            it.path
+                                        },
+                                        contentType = {
+                                            it.path
                                         }
+                                    ) {
+                                        VideoLayout(
+                                            status = it,
+                                            touchImageResource = R.drawable.download_icon,
+                                            viewImageResource = R.drawable.view,
+                                            onSaveClicked = {
+                                                Common.saveFile(status = it, context = context)
+                                            },
+                                            onViewClicked = {
+                                                viewImage(context, it)
+                                            }
+                                        )
                                     }
-                                    is UIDataState.Failed -> {
-                                        Toast.makeText(
-                                            context,
-                                            "${videoStatus.feed.errorMessage}",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+                                }
+                                is UIDataState.Failed -> {
+                                    Toast.makeText(
+                                        context,
+                                        "${videoStatus.feed.errorMessage}",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
 //                                        Box(
 //                                            modifier = Modifier.fillMaxSize(),
 //                                            contentAlignment = Alignment.Center
 //                                        ) {
 //                                            Text(text = "${errorMessage.value}")
 //                                        }
-                                    }
                                 }
                             }
                         }
                     }
                 }
+                //  }
 
             }
         }

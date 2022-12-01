@@ -46,20 +46,16 @@ class MainViewModel() : ViewModel() {
     val waBusinessVideoStatus: LiveData<UIDataState> get() = _waBusinessVideoStatus
 
     // whatsapp image
-    private val _whatsappImageStatus = MutableLiveData<List<Status>>()
-    val whatsappImageStatus: LiveData<List<Status>> get() = _whatsappImageStatus
+    private val _whatsappImageStatus = MutableLiveData<UIDataState>()
+    val whatsappImageStatus: LiveData<UIDataState> get() = _whatsappImageStatus
 
     /// whatsapp video
-    private val _whatsappVideoStatus = MutableLiveData<List<Status>>()
-    val whatsappVideoStatus: LiveData<List<Status>> get() = _whatsappVideoStatus
+    private val _whatsappVideoStatus = MutableLiveData<UIDataState>()
+    val whatsappVideoStatus: LiveData<UIDataState> get() = _whatsappVideoStatus
 
     //saved status and display them in saved
-    private val _savedStatus = MutableLiveData<List<Status>>()
-    val savedStatus: LiveData<List<Status>> get() = _savedStatus
-
-//    //observe ui error
-//    private val _errorMessageBusiness = MutableLiveData<String>()
-//    val errorMessageBusiness: LiveData<String> get() = _errorMessageBusiness
+    private val _savedStatus = MutableLiveData<UIDataState>()
+    val savedStatus: LiveData<UIDataState> get() = _savedStatus
 
     //
     private val _errorMessage = MutableLiveData<String>()
@@ -189,7 +185,7 @@ class MainViewModel() : ViewModel() {
                 _waBusinessVideoStatus.postValue(
                     UIDataState.Failed(
                         UIState(
-                           status=  UIState.EMPTY ?: listOf(),
+                            status = UIState.EMPTY ?: listOf(),
                             errorMessage = "No File Found"
                         )
                     )
@@ -211,12 +207,25 @@ class MainViewModel() : ViewModel() {
                     val status = Status(file = file, title = file.name, path = file.absolutePath)
                     if (!status.isVideo && status.title.endsWith(".jpg")) {
                         whatsappImageStatusList.add(status)
-                        _whatsappImageStatus.postValue(whatsappImageStatusList)
+                        _whatsappImageStatus.postValue(
+                            UIDataState.Success(
+                                UIState(
+                                    status = whatsappImageStatusList,
+                                    errorMessage = UIState.EMPTY
+                                )
+                            )
+                        )
                     }
                 }
-                if (whatsappImageStatusList.size <= 0) _errorMessage.postValue("No File Found")
             } else {
-                _errorMessage.postValue("No File found")
+                _whatsappImageStatus.postValue(
+                    UIDataState.Failed(
+                        UIState(
+                            status = UIState.EMPTY ?: listOf(),
+                            errorMessage = "No File Found"
+                        )
+                    )
+                )
             }
         }
     }
@@ -232,12 +241,25 @@ class MainViewModel() : ViewModel() {
                     val status = Status(file, file.name, file.absolutePath)
                     if (status.isVideo) {
                         whatsappVideoStatus.add(status)
-                        _whatsappVideoStatus.postValue(whatsappVideoStatus)
+                        _waBusinessImageStatus.postValue(
+                            UIDataState.Success(
+                                UIState(
+                                    status = whatsappVideoStatus,
+                                    errorMessage = UIState.EMPTY
+                                )
+                            )
+                        )
                     }
                 }
-                if (whatsappVideoStatus.size <= 0) _errorMessage.postValue("No File Found")
             } else {
-                _errorMessage.postValue("No File found")
+                _whatsappImageStatus.postValue(
+                    UIDataState.Failed(
+                        UIState(
+                            status = UIState.EMPTY ?: listOf(),
+                            errorMessage = "No File Found"
+                        )
+                    )
+                )
             }
         }
     }
@@ -256,11 +278,27 @@ class MainViewModel() : ViewModel() {
                         for (file in savedFiles) {
                             val status = Status(file, file.name, file.absolutePath)
                             savedFilesList.add(status)
-                            _savedStatus.postValue(savedFilesList)
+                            _savedStatus.postValue(
+                                UIDataState.Success(
+                                    UIState(
+                                        status = savedFilesList,
+                                        errorMessage = UIState.EMPTY
+                                    )
+                                )
+                            )
                         }
-                    } else _errorMessage.postValue("No File Found")
+                    }
                 }
-            } else _errorMessage.postValue("Folder Not Found")
+            } else {
+                _savedStatus.postValue(
+                    UIDataState.Failed(
+                        UIState(
+                            status = UIState.EMPTY ?: listOf(),
+                            errorMessage = "No File Found"
+                        )
+                    )
+                )
+            }
         }
     }
 }
