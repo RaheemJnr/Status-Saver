@@ -20,25 +20,57 @@ data class Status(
  * **/
 @Stable
 @Immutable
-sealed class UIDataState<T> {
-    class Loading<T> : UIDataState<T>()
-    data class Success<T>(val data: T) : UIDataState<T>()
-    class Failed<T>(val message: T) : UIDataState<T>()
+//sealed class UIDataState<T> {
+//    object Loading : UIDataState<Loading>()
+//    data class Success<T>(val data: T) : UIDataState<T>()
+//    class Failed<T>(val message: T) : UIDataState<T>()
+//
+//    val isLoading get() = this is Loading
+//
+//    val isSuccess get() = this is Success
+//
+//    val isFailed get() = this is Failed
+//
+//    companion object {
+//        fun <T> loading() = Loading
+//        fun <T> success(data: T) = Success(data)
+//        fun <T> failed(message: T) = Failed(message)
+//    }
+//}
 
-    val isLoading get() = this is Loading
 
-    val isSuccess get() = this is Success
+/**
+ * A sealed hierarchy describing the state of the feed of news resources.
+ */
+sealed interface UIDataState {
+    /**
+     * The feed is still loading.
+     */
+    object Loading : UIDataState
 
-    val isFailed get() = this is Failed
+    /**
+     * The feed is loaded with the given list of news resources.
+     */
+    data class Success(
+        /**
+         * The list of news resources contained in this feed.
+         */
+        val feed: UIState
+    ) : UIDataState
 
-    companion object {
-        fun <T> loading() = Loading<T>()
-        fun <T> success(data: T) = Success(data)
-        fun <T> failed(message: T) = Failed<T>(message)
-    }
+    data class Failed(
+        /**
+         * The list of news resources contained in this feed.
+         */
+        val feed: UIState
+    ) : UIDataState
 }
 
 data class UIState(
-    val status: ArrayList<Status>? = arrayListOf(),
+    val status: List<Status> = listOf(),
     val errorMessage: String? = null
-)
+) {
+    companion object {
+        val EMPTY = null
+    }
+}

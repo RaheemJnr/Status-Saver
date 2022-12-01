@@ -2,10 +2,15 @@ package com.example.statussaver.ui.screen.whatsapp_business
 
 
 import android.app.Activity
+import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TabRow
 import androidx.compose.material.Text
@@ -18,8 +23,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.example.statussaver.R
-import com.example.statussaver.model.Status
+import com.example.statussaver.model.UIDataState
 import com.example.statussaver.ui.components.ImageLayout
 import com.example.statussaver.ui.components.VideoLayout
 import com.example.statussaver.ui.theme.Dimens
@@ -40,10 +47,10 @@ fun PagerBusiness(
     mainViewModel: MainViewModel,
     pagerState: PagerState,
     scope: CoroutineScope,
-    errorMessage: State<String?>,
+    //errorMessage: State<String?>,
     isRefreshing: StateFlow<Boolean>,
-    imageStatus: State<List<Status>?>,
-    videoStatus: State<List<Status>?>
+    imageStatus: UIDataState,
+    videoStatus: UIDataState
 ) {
     val tabsTitles =
         remember { listOf(TabItems("Images"), TabItems("Videos")) }
@@ -85,29 +92,46 @@ fun PagerBusiness(
                                 modifier = Modifier.padding(horizontal = 2.dp),
                                 columns = GridCells.Adaptive(minSize = 128.dp)
                             ) {
-                                imageStatus.value?.let { list ->
-                                    items(
-                                        items = list,
-                                        key = {
-                                            it.path
-                                        },
-                                        contentType = {
-                                            it.path
-                                        }
-                                    ) {
-                                        ImageLayout(
-                                            status = it,
-                                            saveImageResource = R.drawable.download_icon,
-                                            viewImageResource = R.drawable.view,
-                                            onViewClicked = {
-                                                viewImage(context, it)
+                                when (imageStatus) {
+                                    is UIDataState.Loading -> Unit
+                                    is UIDataState.Success -> {
+                                        items(
+                                            items = imageStatus.feed.status,
+                                            key = {
+                                                it.path
                                             },
-                                            onSaveClicked = {
-                                                Common.saveFile(status = it, context = context)
+                                            contentType = {
+                                                it.path
                                             }
-                                        )
+                                        ) {
+                                            ImageLayout(
+                                                status = it,
+                                                saveImageResource = R.drawable.download_icon,
+                                                viewImageResource = R.drawable.view,
+                                                onViewClicked = {
+                                                    viewImage(context, it)
+                                                },
+                                                onSaveClicked = {
+                                                    Common.saveFile(status = it, context = context)
+                                                }
+                                            )
+                                        }
+                                    }
+                                    is UIDataState.Failed -> {
+                                        Toast.makeText(
+                                            context,
+                                            "${imageStatus.feed.errorMessage}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+//                                        Box(
+//                                            modifier = Modifier.fillMaxSize(),
+//                                            contentAlignment = Alignment.Center
+//                                        ) {
+//                                            Text(text = "${errorMessage.value}")
+//                                        }
                                     }
                                 }
+
                             }
                         }
                     }
@@ -131,31 +155,49 @@ fun PagerBusiness(
                                 mainViewModel.getWABusinessStatusVideo()
                             },
                         ) {
+                            val scrollableState = rememberLazyGridState()
                             LazyVerticalGrid(
                                 modifier = Modifier.padding(horizontal = 2.dp),
-                                columns = GridCells.Adaptive(minSize = 128.dp)
+                                columns = GridCells.Adaptive(minSize = 128.dp),
+                                state = scrollableState
                             ) {
-                                videoStatus.value?.let { list ->
-                                    items(
-                                        items = list,
-                                        key = {
-                                            it.path
-                                        },
-                                        contentType = {
-                                            it.path
-                                        }
-                                    ) {
-                                        VideoLayout(
-                                            status = it,
-                                            touchImageResource = R.drawable.download_icon,
-                                            viewImageResource = R.drawable.view,
-                                            onSaveClicked = {
-                                                Common.saveFile(status = it, context = context)
+                                when (videoStatus) {
+                                    is UIDataState.Loading -> Unit
+                                    is UIDataState.Success -> {
+                                        items(
+                                            items = videoStatus.feed.status,
+                                            key = {
+                                                it.path
                                             },
-                                            onViewClicked = {
-                                                viewImage(context, it)
+                                            contentType = {
+                                                it.path
                                             }
-                                        )
+                                        ) {
+                                            VideoLayout(
+                                                status = it,
+                                                touchImageResource = R.drawable.download_icon,
+                                                viewImageResource = R.drawable.view,
+                                                onSaveClicked = {
+                                                    Common.saveFile(status = it, context = context)
+                                                },
+                                                onViewClicked = {
+                                                    viewImage(context, it)
+                                                }
+                                            )
+                                        }
+                                    }
+                                    is UIDataState.Failed -> {
+                                        Toast.makeText(
+                                            context,
+                                            "${videoStatus.feed.errorMessage}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+//                                        Box(
+//                                            modifier = Modifier.fillMaxSize(),
+//                                            contentAlignment = Alignment.Center
+//                                        ) {
+//                                            Text(text = "${errorMessage.value}")
+//                                        }
                                     }
                                 }
                             }
@@ -168,6 +210,21 @@ fun PagerBusiness(
     }
 }
 
+@Composable
+fun LoaderDialog() {
+    Dialog(
+        onDismissRequest = {},
+        DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
+    ) {
+        Box(
+            modifier = Modifier
+                .size(50.dp)
+                .background(Color.White, shape = RoundedCornerShape(8.dp))
+        ) {
+            CircularProgressIndicator(modifier = Modifier.fillMaxSize())
+        }
+    }
+}
 
 
 @Composable

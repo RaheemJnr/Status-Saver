@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.statussaver.model.Status
 import com.example.statussaver.model.UIDataState
-import com.example.statussaver.ui.screen.state.UIState
+import com.example.statussaver.model.UIState
 import com.example.statussaver.utilz.Common
 import com.example.statussaver.utilz.Constants.BUSINESS_STATUS_DIRECTORY
 import com.example.statussaver.utilz.Constants.BUSINESS_STATUS_DIRECTORY_NEW
@@ -38,12 +38,12 @@ class MainViewModel() : ViewModel() {
     }
 
     //whats business image
-    private val _waBusinessImageStatus = MutableLiveData<UIDataState<UIState>>()
-    val waBusinessImageStatus: LiveData<UIDataState<UIState>> get() = _waBusinessImageStatus
+    private val _waBusinessImageStatus = MutableLiveData<UIDataState>()
+    val waBusinessImageStatus: LiveData<UIDataState> get() = _waBusinessImageStatus
 
     //whats business video
-    private val _waBusinessVideoStatus = MutableLiveData<UIDataState<UIState>>()
-    val waBusinessVideoStatus: LiveData<UIDataState<UIState>> get() = _waBusinessVideoStatus
+    private val _waBusinessVideoStatus = MutableLiveData<UIDataState>()
+    val waBusinessVideoStatus: LiveData<UIDataState> get() = _waBusinessVideoStatus
 
     // whatsapp image
     private val _whatsappImageStatus = MutableLiveData<List<Status>>()
@@ -57,9 +57,9 @@ class MainViewModel() : ViewModel() {
     private val _savedStatus = MutableLiveData<List<Status>>()
     val savedStatus: LiveData<List<Status>> get() = _savedStatus
 
-    //observe ui error
-    private val _errorMessageBusiness = MutableLiveData<String>()
-    val errorMessageBusiness: LiveData<String> get() = _errorMessageBusiness
+//    //observe ui error
+//    private val _errorMessageBusiness = MutableLiveData<String>()
+//    val errorMessageBusiness: LiveData<String> get() = _errorMessageBusiness
 
     //
     private val _errorMessage = MutableLiveData<String>()
@@ -74,9 +74,6 @@ class MainViewModel() : ViewModel() {
             BUSINESS_STATUS_DIRECTORY_NEW.exists() -> {
                 executeForBusinessImage(BUSINESS_STATUS_DIRECTORY_NEW)
             }
-            else -> {
-                _errorMessageBusiness.postValue("Can't find Whatsapp Business Directory")
-            }
         }
     }
 
@@ -88,9 +85,9 @@ class MainViewModel() : ViewModel() {
             BUSINESS_STATUS_DIRECTORY_NEW.exists() -> {
                 executeForBusinessVideo(BUSINESS_STATUS_DIRECTORY_NEW)
             }
-            else -> {
-                _errorMessageBusiness.postValue("Can't find Whatsapp Business Directory")
-            }
+//            else -> {
+//                _errorMessageBusiness.postValue("Can't find Whatsapp Business Directory")
+//            }
         }
     }
 
@@ -126,22 +123,22 @@ class MainViewModel() : ViewModel() {
 
     //
     private fun executeForBusinessImage(wAFolder: File) {
-        //  val businessImageStatus = arrayListOf<Status>()
+        val businessImageStatus = arrayListOf<Status>()
         viewModelScope.launch {
             val statusFiles: Array<File>? = wAFolder.listFiles()
-            // businessImageStatus.clear()
-            _waBusinessImageStatus.postValue(UIDataState.loading())
+            businessImageStatus.clear()
+            _waBusinessImageStatus.postValue(UIDataState.Loading)
             if (statusFiles != null && statusFiles.isNotEmpty()) {
                 statusFiles.sortByDescending { it.lastModified() }
                 for (file in statusFiles) {
                     val status = Status(file = file, title = file.name, path = file.absolutePath)
                     if (!status.isVideo && status.title.endsWith(".jpg")) {
-                        //   businessImageStatus.add(status)
+                        businessImageStatus.add(status)
                         _waBusinessImageStatus.postValue(
-                            UIDataState.success(
+                            UIDataState.Success(
                                 UIState(
-                                    status = arrayListOf(status),
-                                    errorMessage = null
+                                    status = businessImageStatus,
+                                    errorMessage = UIState.EMPTY
                                 )
                             )
                         )
@@ -152,9 +149,9 @@ class MainViewModel() : ViewModel() {
 //                }
             } else {
                 _waBusinessImageStatus.postValue(
-                    UIDataState.failed(
+                    UIDataState.Failed(
                         UIState(
-                            status = null,
+                            status = UIState.EMPTY ?: listOf(),
                             errorMessage = "No File Found"
                         )
                     )
@@ -165,20 +162,23 @@ class MainViewModel() : ViewModel() {
     }
 
     private fun executeForBusinessVideo(waFolder: File) {
-        //val businessVideoStatus = arrayListOf<Status>()
+        val businessVideoStatus = arrayListOf<Status>()
         viewModelScope.launch {
             val statusFiles = waFolder.listFiles()
             //  businessVideoStatus.clear()
-            _waBusinessVideoStatus.postValue(UIDataState.loading())
+            _waBusinessVideoStatus.postValue(UIDataState.Loading)
             if (statusFiles != null && statusFiles.isNotEmpty()) {
                 statusFiles.sortByDescending { it.lastModified() }
                 for (file in statusFiles) {
                     val status = Status(file, file.name, file.absolutePath)
                     if (status.isVideo) {
-                        //       businessVideoStatus.add(status)
+                        businessVideoStatus.add(status)
                         _waBusinessVideoStatus.postValue(
-                            UIDataState.success(
-                                UIState(status = arrayListOf(status), null)
+                            UIDataState.Success(
+                                UIState(
+                                    status = businessVideoStatus,
+                                    errorMessage = UIState.EMPTY
+                                )
                             )
                         )
                     }
@@ -186,7 +186,14 @@ class MainViewModel() : ViewModel() {
                 // if (businessVideoStatus.size <= 0) _errorMessageBusiness.postValue("No File Found")
 
             } else {
-                _waBusinessVideoStatus.postValue(UIDataState.failed(UIState(null, "No File Found")))
+                _waBusinessVideoStatus.postValue(
+                    UIDataState.Failed(
+                        UIState(
+                           status=  UIState.EMPTY ?: listOf(),
+                            errorMessage = "No File Found"
+                        )
+                    )
+                )
             }
         }
     }

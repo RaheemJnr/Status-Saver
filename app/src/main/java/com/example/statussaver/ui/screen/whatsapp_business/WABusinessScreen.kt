@@ -10,6 +10,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -27,9 +28,9 @@ fun WABusiness(
     mainViewModel: MainViewModel
 ) {
     //context
-    val imageStatus = mainViewModel.waBusinessImageStatus.observeAsState()
-    val videoStatus = mainViewModel.waBusinessVideoStatus.observeAsState()
-    val errorMessage = mainViewModel.errorMessageBusiness.observeAsState()
+    val imageStatus by mainViewModel.waBusinessImageStatus.observeAsState()
+    val videoStatus by mainViewModel.waBusinessVideoStatus.observeAsState()
+  //  val errorMessage by mainViewModel.errorMessageBusiness.observeAsState()
     val isRefreshing = mainViewModel.isRefreshing
     mainViewModel.getWABusinessStatusImage()
     mainViewModel.getWABusinessStatusVideo()
@@ -73,10 +74,10 @@ fun WABusiness(
                     mainViewModel = mainViewModel,
                     pagerState = pagerState,
                     scope = scope,
-                    errorMessage = errorMessage,
+                //    errorMessage = errorMessage,
                     isRefreshing = isRefreshing,
-                    imageStatus = imageStatus,
-                    videoStatus = videoStatus
+                    imageStatus = imageStatus!!,
+                    videoStatus = videoStatus!!
                 )
             }
 
